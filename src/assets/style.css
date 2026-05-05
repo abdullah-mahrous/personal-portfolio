@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0B0B0F;
+    color: #ffffff;
+    padding: 8px;
+}
+
+.base-border {
+    border: 1.5px solid #8315E7
+}
