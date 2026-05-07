@@ -1,5 +1,6 @@
 <template>
-    <button type="button" class="text-white bg-primary px-4 py-2 rounded-md hover:bg-primary/90 transition-colors duration-300">
+    <button type="button"
+        class="cursor-pointer bg-primary text-[14px] px-4 py-2 rounded-md hover:bg-primary/85 transition-colors duration-400 flex justify-center items-center">
         <slot />
     </button>
 </template>

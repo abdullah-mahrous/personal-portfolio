@@ -1,6 +1,8 @@
 <template>
-    <button type="button" class="rounded-full bg-primary-500 text-white p-2 w-10 h-10 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-blue-300 fixed bottom-4 right-4 z-20" @click="goUp">
-        <MoveUp/>
+    <button type="button"
+        class="rounded-full bg-primary w-12 h-12 hover:bg-primary/85 focus:outline-none focus:ring-2 focus:ring-primary fixed bottom-4 right-4 transition-colors ease-in-out duration-400 z-20 cursor-pointer flex justify-center items-center"
+        @click="goUp">
+        <MoveUp :size="26" />
     </button>
 </template>
 

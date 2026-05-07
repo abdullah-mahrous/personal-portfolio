@@ -1,14 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #8315E7;
+    --color-darkBg: #0B0B0F;
+    --color-lightBg: #F8F9FC;
+    --color-darkCard: #15161C;
+    --color-lightText: #111827;
+    --color-darkText: #fff;
+    --color-muted: #6B6B6B;
+    --color-offWhite: #B3B3B3;
+}
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #0B0B0F;
-    color: #ffffff;
-    padding: 8px;
+    background-color: var(--color-darkBg);
+    color: var(--color-darkText);
+    padding: 0 2rem;
 }
 
 .base-border {
-    border: 1.5px solid #8315E7
+    border: 1.5px solid var(--color-primary);
 }

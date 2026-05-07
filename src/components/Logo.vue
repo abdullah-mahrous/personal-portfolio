@@ -1,5 +1,5 @@
 <template>
-    <router-link to="/" class="font-bold text-2xl">
-        <span class="primary">A</span>M
-    </router-link>
+    <span class="font-bold text-4xl">
+        <span class="text-primary">A</span>M
+    </span>
 </template>

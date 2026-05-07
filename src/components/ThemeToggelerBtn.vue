@@ -1,13 +1,12 @@
 <template>
-    <div class="mx-2 p-1 rounded-full bg-gray-200 dark:bg-gray-700 relative">
-        <input type="checkbox" hidden :checked="isDark" @change="toggleTheme" />
+    <div class="px-2 rounded-full flex items-center justify-center border-2 border-muted relative" @click="toggleTheme">
 
-        <label for="theme-toggle" class="theme-toggle-label">
-            <span class="toggle-indicator bg-white rounded-full h-4 w-4 z-10 relative"></span>
-            <Sun class="sun-icon" :color="isDark ? '#6B6B6B' : '#fff'"/>
-            <Moon class="moon-icon" :color="isDark ? '#fff' : '#000'" />
-        </label>
-        
+        <input type="checkbox" name="theme-toggle" hidden :checked="isDark" @change="toggleTheme" />
+
+        <label for="theme-toggle" class="cursor-pointer bg-white rounded-full h-6 w-6 z-10 absolute right-1"></label>
+
+        <Sun class="sun-icon mr-4" :color="isDark ? '#6B6B6B' : '#fff'" :size="20" />
+        <Moon class="moon-icon" :color="isDark ? '#fff' : '#000'" :size="20" />
     </div>
 </template>
 
@@ -18,22 +17,24 @@ import { ref, onMounted } from 'vue';
 const isDark = ref<boolean>(true);
 
 onMounted(() => {
-  const savedTheme: string | null = localStorage.getItem('theme');
+    const savedTheme: string | null = localStorage.getItem('theme');
 
-  if (savedTheme === 'dark') {
-    isDark.value = true;
-    document.body.classList.add('dark');
-  }
+    if (savedTheme === 'dark') {
+        isDark.value = true;
+        document.body.classList.add('dark');
+    }
 });
 
 const toggleTheme = () => {
-  isDark.value = !isDark.value;
-  if (isDark.value) {
-    document.body.classList.add('dark');
-    localStorage.setItem('theme', 'dark');
-  } else {
-    document.body.classList.remove('dark');
-    localStorage.setItem('theme', 'light');
-  }
+    isDark.value = !isDark.value;
+
+    if (isDark.value) {
+        document.body.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+    }
+    else {
+        document.body.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+    }
 };
 </script>
