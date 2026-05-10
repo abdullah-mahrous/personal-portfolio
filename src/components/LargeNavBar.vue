@@ -1,5 +1,5 @@
 <template>
-    <nav class="py-5 sticky top-0 z-50">
+    <nav class="py-5 sticky top-0 z-50 bg-darkBg backdrop-blur-sm">
         <ul class="flex justify-between items-center list-none">
             <li>
                 <Logo />
@@ -7,24 +7,21 @@
 
             <li class="muted text-offWhite flex items-center justify-center text-[18px]">
                 <span class="mx-4"><router-link to="/" active-class="active-tab">Home</router-link></span>
-                <span class="mx-4 hover:text-white transition-colors duration-400"><router-link to="/projects"
+                <span class="nav-link"><router-link to="/projects"
                         active-class="active-tab">Projects</router-link></span>
-                <span class="mx-4 hover:text-white transition-colors duration-400"><router-link to="/about"
-                        active-class="active-tab">About</router-link></span>
-                <span class="mx-4 hover:text-white transition-colors duration-400"><router-link to="/contact"
-                        active-class="active-tab">Contact</router-link></span>
-                <span class="mx-4 hover:text-white transition-colors duration-400"><router-link to="/blog"
-                        active-class="active-tab">Blog</router-link></span>
+                <span class="nav-link"><router-link to="/about" active-class="active-tab">About</router-link></span>
+                <span class="nav-link"><router-link to="/contact" active-class="active-tab">Contact</router-link></span>
+                <span class="nav-link"><router-link to="/blog" active-class="active-tab">Blog</router-link></span>
             </li>
 
             <li class="flex">
-                <ThemeToggelerBtn class="mx-8" />
+                <theme-toggeler-btn class="mx-8" />
 
                 <router-link to="/contact">
-                    <BaseBtn>
+                    <base-btn class="px-4 py-2">
                         Let's Talk
                         <MoveRight class="ml-3" />
-                    </BaseBtn>
+                    </base-btn>
                 </router-link>
             </li>
         </ul>
@@ -41,8 +38,8 @@ import Logo from './Logo.vue';
 
 <style>
 .active-tab {
-    color: #8315E7;
-    border-bottom: #8315E7 2px solid;
+    color: var(--color-primary);
+    border-bottom: var(--color-primary) 2px solid;
     padding-bottom: 8px;
 }
 </style>

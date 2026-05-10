@@ -15,9 +15,25 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: var(--color-darkBg);
     color: var(--color-darkText);
-    padding: 0 2rem;
+    padding: 0 4rem;
 }
 
 .base-border {
     border: 1.5px solid var(--color-primary);
+}
+
+.hero-socials {
+    @apply bg-[#111217] hover:bg-[#2A2A35] border border-[#1F2028] p-4 flex justify-center items-center rounded-lg text-white transition-colors duration-300 ease-in-out;
+}
+
+.hero-glow-circles {
+    @apply absolute inset-0 z-[-3] rounded-3xl blur-2xl opacity-75;
+}
+
+.nav-link {
+    @apply mx-4 hover:text-white transition-colors duration-400;
+}
+
+.hero-particles {
+    @apply animate-[float_4s_ease-in-out_infinite] absolute z-[-2] w-2/5 h-2/5 bg-size-[20px_20px];
 }
