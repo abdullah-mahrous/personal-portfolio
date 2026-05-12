@@ -15,7 +15,7 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: var(--color-darkBg);
     color: var(--color-darkText);
-    padding: 0 4rem;
+    padding: 0;
 }
 
 .base-border {

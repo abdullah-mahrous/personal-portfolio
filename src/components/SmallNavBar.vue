@@ -1,24 +1,25 @@
 <template>
-    <nav class="navbar">
+    <nav class="navbar px-4">
         <ul>
             <li>
-                <Logo/>
+                <Logo />
             </li>
 
             <li>
                 <div>
-                    <li><router-link to="/">Home</router-link></li>
-                    <li><router-link to="/projects">Projects</router-link></li>
-                    <li><router-link to="/about">About</router-link></li>
-                    <li><router-link to="/contact">Contact</router-link></li>
-                    <li><router-link to="/blog">Blog</router-link></li>
-                    <li><router-link to="/login">Login</router-link></li>
-                </div>
+            <li><router-link to="/">Home</router-link></li>
+            <li><router-link to="/projects">Projects</router-link></li>
+            <li><router-link to="/about">About</router-link></li>
+            <li><router-link to="/contact">Contact</router-link></li>
+            <li><router-link to="/blog">Blog</router-link></li>
+            <li><router-link to="/login">Login</router-link></li>
+            </div>
             </li>
 
             <li>
                 <div class="theme-btn">
-                    <input type="checkbox" id="theme-toggle" class="theme-toggle" :checked="isDark" @change="toggleTheme" />
+                    <input type="checkbox" id="theme-toggle" class="theme-toggle" :checked="isDark"
+                        @change="toggleTheme" />
 
                     <label for="theme-toggle" class="theme-toggle-label">
                         <span class="toggle-indicator"></span>
@@ -26,7 +27,7 @@
                         <Moon class="moon-icon" />
                     </label>
                 </div>
-                
+
                 <MenuSquare />
             </li>
         </ul>
@@ -41,22 +42,22 @@ import Logo from './Logo.vue';
 const isDark = ref<boolean>(false);
 
 onMounted(() => {
-  const savedTheme: string | null = localStorage.getItem('theme');
+    const savedTheme: string | null = localStorage.getItem('theme');
 
-  if (savedTheme === 'dark') {
-    isDark.value = true;
-    document.body.classList.add('dark');
-  }
+    if (savedTheme === 'dark') {
+        isDark.value = true;
+        document.body.classList.add('dark');
+    }
 });
 
 const toggleTheme = () => {
-  isDark.value = !isDark.value;
-  if (isDark.value) {
-    document.body.classList.add('dark');
-    localStorage.setItem('theme', 'dark');
-  } else {
-    document.body.classList.remove('dark');
-    localStorage.setItem('theme', 'light');
-  }
+    isDark.value = !isDark.value;
+    if (isDark.value) {
+        document.body.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.body.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+    }
 };
 </script>

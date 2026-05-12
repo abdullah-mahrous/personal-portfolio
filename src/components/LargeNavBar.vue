@@ -1,5 +1,5 @@
 <template>
-    <nav class="py-5 sticky top-0 z-50 bg-darkBg backdrop-blur-sm">
+    <nav class="py-5 px-4 md:px-8 lg:px-16 sticky top-0 z-50 bg-darkBg backdrop-blur-sm">
         <ul class="flex justify-between items-center list-none">
             <li>
                 <Logo />
