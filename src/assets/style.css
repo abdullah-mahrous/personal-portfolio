@@ -37,3 +37,19 @@ body {
 .hero-particles {
     @apply animate-[float_4s_ease-in-out_infinite] absolute z-[-2] w-2/5 h-2/5 bg-size-[20px_20px];
 }
+
+.personal-stats {
+    @apply w-1/5 items-center p-4;
+}
+
+.icon-glow {
+    @apply rounded-full bg-[#2b1e4480] flex justify-center items-center p-4 mr-4;
+}
+
+.base-card {
+    @apply bg-[#111217] border border-[#1F2028] rounded-lg;
+}
+
+.card-text {
+    @apply text-offWhite text-sm/relaxed;
+}
