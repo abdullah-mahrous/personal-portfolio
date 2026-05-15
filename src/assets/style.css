@@ -53,3 +53,7 @@ body {
 .card-text {
     @apply text-offWhite text-sm/relaxed;
 }
+
+.base-tabs {
+    @apply flex items-center justify-center rounded-4xl bg-[#111217] hover:bg-[#1a1a22] border border-[#1F2028] px-6 py-2 transition-colors duration-300 ease-in-out text-offWhite cursor-pointer;
+}

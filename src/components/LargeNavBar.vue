@@ -9,8 +9,6 @@
                 <span class="mx-4"><router-link to="/" active-class="active-tab">Home</router-link></span>
                 <span class="nav-link"><router-link to="/projects"
                         active-class="active-tab">Projects</router-link></span>
-                <span class="nav-link"><router-link to="/about" active-class="active-tab">About</router-link></span>
-                <span class="nav-link"><router-link to="/contact" active-class="active-tab">Contact</router-link></span>
                 <span class="nav-link"><router-link to="/blog" active-class="active-tab">Blog</router-link></span>
             </li>
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="p-6 base-card flex flex-col">
+    <div class="p-6 base-card flex flex-col h-full">
         <img :src="imgSrc" :alt="`${projectName} cover image`" class="rounded-lg mb-8 w-full object-cover h-70"
             loading="lazy">
 
@@ -8,7 +8,7 @@
             {{ projectSummary }}
         </p>
 
-        <div class="flex space-x-3 mb-6 flex-wrap gap-y-2">
+        <div class="flex space-x-3 mb-6 flex-wrap gap-y-2 content-start min-h-[72px]">
             <span v-for="tag in tags" :key="tag" class="p-2 rounded-lg border text-sm mb-1" :style="{
                 backgroundColor: getTagColor(tag).bg,
                 borderColor: getTagColor(tag).border,
