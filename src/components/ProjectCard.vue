@@ -1,15 +1,15 @@
 <template>
-    <div class="p-6 base-card flex flex-col h-full">
-        <img :src="imgSrc" :alt="`${projectName} cover image`" class="rounded-lg mb-8 w-full object-cover h-70"
-            loading="lazy">
+    <div class="p-4 sm:p-6 base-card base-border flex flex-col h-full min-w-0">
+        <img :src="imgSrc" :alt="`${projectName} cover image`"
+            class="rounded-lg mb-6 sm:mb-8 w-full object-cover h-48 sm:h-56 lg:h-70" loading="lazy">
 
-        <h5 class="text-xl font-bold mb-4">{{ projectName }}</h5>
+        <h5 class="text-lg sm:text-xl font-bold mb-4 break-words">{{ projectName }}</h5>
         <p class="card-summary card-text mb-4 line-clamp-3 relative h-[calc(theme(lineHeight.6)*3)]">
             {{ projectSummary }}
         </p>
 
-        <div class="flex space-x-3 mb-6 flex-wrap gap-y-2 content-start min-h-[72px]">
-            <span v-for="tag in tags" :key="tag" class="p-2 rounded-lg border text-sm mb-1" :style="{
+        <div class="flex flex-wrap gap-2 sm:gap-3 mb-6 content-start min-h-[72px]">
+            <span v-for="tag in tags" :key="tag" class="px-2 py-1.5 sm:p-2 rounded-lg border text-xs sm:text-sm" :style="{
                 backgroundColor: getTagColor(tag).bg,
                 borderColor: getTagColor(tag).border,
                 color: getTagColor(tag).text

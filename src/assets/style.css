@@ -9,6 +9,8 @@
     --color-darkText: #fff;
     --color-muted: #6B6B6B;
     --color-offWhite: #B3B3B3;
+
+    --breakpoint-xs: 30rem;
 }
 
 body {
@@ -19,11 +21,11 @@ body {
 }
 
 .base-border {
-    border: 1.5px solid var(--color-primary);
+    @apply border border-[#1F2028];
 }
 
 .hero-socials {
-    @apply bg-[#111217] hover:bg-[#2A2A35] border border-[#1F2028] p-4 flex justify-center items-center rounded-lg text-white transition-colors duration-300 ease-in-out;
+    @apply bg-[#111217] hover:bg-[#2A2A35] p-4 flex justify-center items-center rounded-lg text-white transition-colors duration-300 ease-in-out;
 }
 
 .hero-glow-circles {
@@ -35,11 +37,11 @@ body {
 }
 
 .hero-particles {
-    @apply animate-[float_4s_ease-in-out_infinite] absolute z-[-2] w-2/5 h-2/5 bg-size-[20px_20px];
+    @apply animate-[float_4s_ease-in-out_infinite] absolute z-[-2] w-4/5 xs:w-full sm:w-3/5 h-4/5 xs:h-3/5 bg-size-[20px_20px];
 }
 
 .personal-stats {
-    @apply w-1/5 items-center p-4;
+    @apply w-full items-center p-4;
 }
 
 .icon-glow {
@@ -47,7 +49,7 @@ body {
 }
 
 .base-card {
-    @apply bg-[#111217] border border-[#1F2028] rounded-lg;
+    @apply bg-[#111217] rounded-lg;
 }
 
 .card-text {
@@ -55,5 +57,9 @@ body {
 }
 
 .base-tabs {
-    @apply flex items-center justify-center rounded-4xl bg-[#111217] hover:bg-[#1a1a22] border border-[#1F2028] px-6 py-2 transition-colors duration-300 ease-in-out text-offWhite cursor-pointer;
+    @apply flex items-center justify-center rounded-4xl bg-[#111217] hover:bg-[#1a1a22] px-6 py-2 transition-colors duration-300 ease-in-out text-offWhite cursor-pointer;
+}
+
+.base-input {
+    @apply bg-[#111217] rounded-lg p-4 text-white placeholder:text-muted outline-none focus:border-primary;
 }

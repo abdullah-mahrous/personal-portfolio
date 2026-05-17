@@ -1,10 +1,10 @@
 <template>
     <footer
-        class="px-4 md:px-8 lg:px-16 w-full py-4 flex items-center justify-between text-sm muted border-t border-[#1F2028]">
-        <Logo class="justify-self-left" />
-        <span class="text-muted">&copy; 2026 Abdullah Mahrous. All rights reserved.</span>
+        class="px-4 md:px-8 lg:px-16 w-full py-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-center sm:text-left text-sm muted border-t border-[#1F2028]">
+        <Logo class="order-1 justify-self-left" />
+        <span class="order-3 sm:order-2 text-muted">&copy; 2026 Abdullah Mahrous. All rights reserved.</span>
 
-        <div class="flex mr-4 space-x-4">
+        <div class="order-2 sm:order-3 flex flex-wrap justify-center sm:justify-end gap-6 sm:mr-15 lg:mr-4">
             <github-link />
             <linkedin-link />
             <facebook-link />

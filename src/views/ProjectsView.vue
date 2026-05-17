@@ -1,15 +1,15 @@
 <template>
-    <main class="my-8 px-4 md:px-8 lg:px-16">
-        <h1 class="mb-5 font-bold text-5xl">
+    <main class="my-6 sm:my-8 px-4 sm:px-6 md:px-8 lg:px-16 overflow-x-hidden">
+        <h1 class="mb-5 font-bold text-4xl sm:text-5xl">
             Projects
         </h1>
-        <p class="text-offWhite mb-8 text-lg">
+        <p class="text-offWhite mb-8 text-base sm:text-lg">
             Things I've built so far
         </p>
 
         <!-- filter projects btns -->
-        <div class="flex items-center space-x-3">
-            <button v-for="option in filterOptions" :key="option.value" type="button" class="base-tabs"
+        <div class="flex flex-wrap items-center gap-3">
+            <button v-for="option in filterOptions" :key="option.value" type="button" class="base-tabs base-border"
                 :class="activeFilter === option.value ? 'filter-btn-active' : ''"
                 :aria-pressed="activeFilter === option.value" @click="setFilter(option.value)">
                 {{ option.label }}
@@ -17,8 +17,9 @@
         </div>
 
         <!-- project-cards -->
-        <TransitionGroup name="projects" tag="div" class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div v-for="(project, index) in filteredProjects" :key="project.id" class="project-item"
+        <TransitionGroup name="projects" tag="div"
+            class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div v-for="(project, index) in filteredProjects" :key="project.id" class="origin-[center_top] h-full"
                 :style="getDelayStyle(index)">
                 <project-card class="h-full" :img-src="project.imgSrc" :project-name="project.projectName"
                     :project-summary="project.projectSummary" :tags="project.tags"
@@ -28,12 +29,12 @@
 
         <!-- cta banner -->
         <section
-            class="mt-10 mb-12 rounded-xl border border-[#1F2028] bg-[linear-gradient(135deg,#10111800_0%,#0D0E14_100%)] px-5 py-4 md:px-7 md:py-5 flex flex-col gap-5 md:flex-row md:items-center md:justify-between relative overflow-hidden">
+            class="mt-10 mb-12 rounded-xl base-border bg-[linear-gradient(135deg,#10111800_0%,#0D0E14_100%)] px-5 py-4 md:px-7 md:py-5 flex flex-col gap-5 md:flex-row md:items-center md:justify-between relative overflow-hidden">
             <div
                 class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_5%_45%,rgba(131,21,231,0.20),transparent_30%)]">
             </div>
 
-            <div class="flex items-center gap-4 relative z-10">
+            <div class="flex items-center sm:items-center gap-4 relative z-10">
                 <div
                     class="p-2 rounded-xl border border-[#2A2742] bg-[linear-gradient(145deg,#171427,#0E0D17)] shadow-[inset_0_0_20px_rgba(131,21,231,0.23),0_0_22px_rgba(131,21,231,0.12)] flex items-center justify-center">
 
@@ -48,12 +49,13 @@
                 </div>
 
                 <div>
-                    <h3 class="text-white text-2xl font-semibold leading-tight">Have an idea in mind?</h3>
-                    <p class="text-offWhite mt-1">Let's turn it into a real product.</p>
+                    <h3 class="text-white text-2xl sm:text-3xl lg:text-3xl font-bold leading-tight">Have an idea in
+                        mind?</h3>
+                    <p class="text-offWhite mt-1 xs:text-lg">Let's turn it into a real product.</p>
                 </div>
             </div>
 
-            <base-btn class="relative z-10 px-7 py-3 border-0! shadow-[0_0_20px_rgba(131,21,231,0.35)]"
+            <base-btn class="relative z-10 w-full sm:w-auto px-7 py-3 border-0! shadow-[0_0_20px_rgba(131,21,231,0.35)]"
                 @click="scrollToFooter">
                 Contact Me
                 <MoveRight class="ml-2" :size="18" />
@@ -183,11 +185,6 @@ const scrollToFooter = () => {
     background-color: var(--color-primary);
     border: none !important;
     color: #fff;
-}
-
-.project-item {
-    transform-origin: center top;
-    height: 100%;
 }
 
 .projects-enter-active,

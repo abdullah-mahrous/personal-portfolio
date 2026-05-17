@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-20 mb-12 py-16 px-12 rounded-lg flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden" style="background-color: #111217; background-image: linear-gradient(135deg, rgba(131, 21, 231, 0.18) 0%, rgba(131, 21, 231, 0.05) 100%); border: 1px solid #23232A; box-shadow: 0 0 40px rgba(131, 21, 231, 0.12);">
+    <div class="mt-16 sm:mt-20 mb-12 py-8 sm:py-12 lg:py-16 px-5 sm:px-8 lg:px-12 rounded-lg base-border flex flex-col md:flex-row items-center justify-between gap-8 lg:gap-12 relative overflow-hidden" style="background-color: #111217; background-image: linear-gradient(135deg, rgba(131, 21, 231, 0.18) 0%, rgba(131, 21, 231, 0.05) 100%); box-shadow: 0 0 40px rgba(131, 21, 231, 0.12);">
         <!-- Top-left glow circle -->
         <div class="hero-glow-circles bg-[radial-gradient(circle_at_top_left,rgba(131,21,231,0.18),transparent_45%)]"></div>
 
@@ -13,14 +13,14 @@
         <div class="hero-particles bottom-0 right-10 bg-[radial-gradient(#8315e766_1px,transparent_1px)]"></div>
 
         <!-- Left: Text Content -->
-        <div class="flex-1 relative z-10">
-            <h2 class="text-3xl font-bold mb-4 text-white leading-tight whitespace-nowrap">
+        <div class="flex-1 relative z-10 w-full">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-white leading-tight">
                 Let's build something amazing together
             </h2>
-            <p class="text-offWhite text-lg mb-8 max-w-lg leading-relaxed">
+            <p class="text-offWhite text-base sm:text-lg mb-8 max-w-lg leading-relaxed">
                 I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.
             </p>
-            <base-btn class="px-6 py-2 btn-glow text-base" @click="scrollToFooter">
+            <base-btn class="w-full sm:w-auto px-6 py-2 btn-glow text-base" @click="scrollToFooter">
                 Contact Me
                 <MoveRight class="ml-2" />
             </base-btn>

@@ -1,5 +1,5 @@
 <template>
-    <nav class="py-5 px-4 md:px-8 lg:px-16 sticky top-0 z-50 bg-darkBg backdrop-blur-sm">
+    <nav class="py-4 px-4 md:px-8 lg:px-16 sticky top-0 z-50 bg-darkBg backdrop-blur-sm">
         <ul class="flex justify-between items-center list-none">
             <li>
                 <Logo />
@@ -12,8 +12,8 @@
                 <span class="nav-link"><router-link to="/blog" active-class="active-tab">Blog</router-link></span>
             </li>
 
-            <li class="flex">
-                <theme-toggeler-btn class="mx-8" />
+            <li class="flex items-center">
+                <theme-toggeler-btn class="mr-8" />
 
                 <router-link to="/contact">
                     <base-btn class="px-4 py-2">
