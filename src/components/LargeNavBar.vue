@@ -1,15 +1,26 @@
 <template>
-    <nav class="py-4 px-4 md:px-8 lg:px-16 sticky top-0 z-50 bg-darkBg backdrop-blur-sm">
+    <nav class="py-4 px-4 md:px-8 lg:px-16 navbar">
         <ul class="flex justify-between items-center list-none">
             <li>
                 <Logo />
             </li>
 
             <li class="muted text-offWhite flex items-center justify-center text-[18px]">
-                <span class="mx-4"><router-link to="/" active-class="active-tab">Home</router-link></span>
-                <span class="nav-link"><router-link to="/projects"
-                        active-class="active-tab">Projects</router-link></span>
-                <span class="nav-link"><router-link to="/blog" active-class="active-tab">Blog</router-link></span>
+                <span class="nav-link">
+                    <router-link to="/" class="desktop-nav-link" active-class="desktop-nav-link-active">
+                        Home
+                    </router-link>
+                </span>
+                <span class="nav-link">
+                    <router-link to="/projects" class="desktop-nav-link" active-class="desktop-nav-link-active">
+                        Projects
+                    </router-link>
+                </span>
+                <span class="nav-link">
+                    <router-link to="/blog" class="desktop-nav-link" active-class="desktop-nav-link-active">
+                        Blog
+                    </router-link>
+                </span>
             </li>
 
             <li class="flex items-center">
@@ -33,11 +44,3 @@ import BaseBtn from './BaseBtn.vue';
 import Logo from './Logo.vue';
 
 </script>
-
-<style>
-.active-tab {
-    color: var(--color-primary);
-    border-bottom: var(--color-primary) 2px solid;
-    padding-bottom: 8px;
-}
-</style>

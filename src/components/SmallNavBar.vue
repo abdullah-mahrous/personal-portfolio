@@ -1,121 +1,217 @@
 <template>
-    <nav class="py-3 px-4 sticky top-0 z-50 bg-darkBg w-full">
-        <ul class="flex justify-between items-center list-none w-full">
-            <li>
-                <Logo />
-            </li>
+    <nav>
+        <div class="py-3 px-4 navbar">
 
-            <li class="flex items-center">
-                <button type="button" class="base-border rounded-lg p-1">
-                    <Menu :size="28" />
-                </button>
-            </li>
-        </ul>
-    </nav>
+            <ul class="flex justify-between items-center list-none w-full">
+                <li>
+                    <Logo />
+                </li>
 
-    <div>
-        <div>
-
-            <div>
-                <logo />
-
-                <button type="button">
-                    <X :size="30" />
-                </button>
-            </div>
-
-            <div>
-                <router-link :to="{ name: 'home' }">
-                    <div>
-                        <House />
-                        Home
-                    </div>
-                </router-link>
-
-                <router-link :to="{ name: 'home' }">
-                    <div>
-                        <Folder />
-                        Projects
-                    </div>
-                </router-link>
-
-                <router-link :to="{ name: 'home' }">
-                    <div>
-                        <FileCode />
-                        Blog
-                    </div>
-                </router-link>
-            </div>
-
-            <div>
-                <p>
-                    Let's Connect
-                </p>
-
-                <div class="flex flex-wrap justify-between xs:justify-start gap-4 xs:gap-8 sm:gap-6 mt-6">
-                    <github-link class="hero-socials base-border" />
-                    <linkedin-link class="hero-socials base-border" />
-                    <facebook-link class="hero-socials base-border" />
-                    <mail-link class="hero-socials base-border" />
-                </div>
-
-            </div>
-
-            <!-- cta banner -->
-            <div
-                class="mt-10 mb-12 rounded-xl base-border bg-[linear-gradient(135deg,#10111800_0%,#0D0E14_100%)] px-5 py-4 md:px-7 md:py-5 flex flex-col gap-5 md:flex-row md:items-center md:justify-between relative overflow-hidden">
-                <div
-                    class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_5%_45%,rgba(131,21,231,0.20),transparent_30%)]">
-                </div>
-
-                <div class="flex items-center sm:items-center gap-4 relative z-10">
-                    <div
-                        class="p-2 rounded-xl border border-[#2A2742] bg-[linear-gradient(145deg,#171427,#0E0D17)] shadow-[inset_0_0_20px_rgba(131,21,231,0.23),0_0_22px_rgba(131,21,231,0.12)] flex items-center justify-center">
-
-                        <svg viewBox="0 0 24 24" fill="none" class="w-14 h-14">
-                            <path d="M12 3L19 7V17L12 21L5 17V7L12 3Z" stroke="#9D4DFF" stroke-width="1.2"
-                                stroke-linejoin="round" />
-                            <path d="M12 3V21" stroke="#B177FF" stroke-width="1.2" stroke-linecap="round" />
-                            <path d="M5 7L12 11L19 7" stroke="#B177FF" stroke-width="1.2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-
-                    </div>
-
-                    <div>
-                        <h3 class="text-white text-2xl sm:text-3xl lg:text-3xl font-bold leading-tight">Have an idea in
-                            mind?</h3>
-                        <p class="text-offWhite mt-1 xs:text-lg">Let's turn it into a real product.</p>
-                    </div>
-                </div>
-
-                <base-btn
-                    class="relative z-10 w-full sm:w-auto px-7 py-3 border-0! shadow-[0_0_20px_rgba(131,21,231,0.35)]">
-                    Contact Me
-                    <MoveRight class="ml-2" :size="18" />
-                </base-btn>
-            </div>
-
-            <!-- theme toggle btn -->
-            <div>
-                <theme-toggeler-btn />
-            </div>
+                <li class="flex items-center">
+                    <button type="button" class="base-border rounded-lg p-1" aria-label="Open menu"
+                        @click="openSidebar">
+                        <Menu :size="28" />
+                    </button>
+                </li>
+            </ul>
 
         </div>
-    </div>
+
+        <Transition name="mobile-sidebar"
+            enter-active-class="mobile-sidebar-enter-active transition-opacity duration-[280ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+            enter-from-class="mobile-sidebar-enter-from opacity-0" enter-to-class="mobile-sidebar-enter-to opacity-100"
+            leave-active-class="mobile-sidebar-leave-active transition-opacity duration-[280ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+            leave-from-class="mobile-sidebar-leave-from opacity-100" leave-to-class="mobile-sidebar-leave-to opacity-0"
+            @after-leave="handleSidebarAfterLeave">
+
+            <div v-if="isSidebarOpen" class="bg-[#0b0b0f91] z-60 w-full h-screen fixed inset-0"
+                @click.self="closeSidebar">
+
+                <div
+                    class="mobile-sidebar-panel translate-x-0 opacity-100 transition-[transform,opacity] duration-[280ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[transform,opacity] bg-darkBg p-6 w-3/4 h-full overflow-y-auto flex flex-col">
+
+                    <div class="flex items-center justify-between">
+                        <logo />
+
+                        <button type="button" class="border-[#1F2028] rounded-lg p-1 border-2" aria-label="Close menu"
+                            @click="closeSidebar">
+                            <X />
+                        </button>
+                    </div>
+
+                    <div class="my-8 space-x-2">
+                        <router-link :to="{ name: 'home' }" active-class="mobile-nav-link-active"
+                            class="mobile-nav-link flex items-center rounded-lg p-4">
+                            <House class="mr-4" />
+                            Home
+                        </router-link>
+
+                        <router-link :to="{ name: 'projects' }" active-class="mobile-nav-link-active"
+                            class="mobile-nav-link flex items-center rounded-lg p-4">
+                            <Folder class="mr-4" />
+                            Projects
+                        </router-link>
+
+                        <router-link :to="{ name: 'blog' }" active-class="mobile-nav-link-active"
+                            class="mobile-nav-link flex items-center rounded-lg p-4">
+                            <FileCode class="mr-4" />
+                            Blog
+                        </router-link>
+                    </div>
+
+                    <div class="border-t border-[#1F2028] pt-8">
+                        <p class="text-offWhite">
+                            Let's Connect
+                        </p>
+
+                        <div class="flex gap-4 mt-6">
+                            <github-link class="hero-socials base-border p-2" :icon-size="20" />
+                            <linkedin-link class="hero-socials base-border p-2" :icon-size="20" />
+                            <facebook-link class="hero-socials base-border p-2" :icon-size="20" />
+                            <mail-link class="hero-socials base-border p-2" :icon-size="20" />
+                        </div>
+
+                    </div>
+
+                    <!-- cta banner -->
+                    <div
+                        class="mt-10 mb-12 rounded-xl base-border bg-[linear-gradient(135deg,#101118_0%,#0D0E14_100%)] px-4 py-4 flex flex-col gap-4 shadow-[0_0_24px_rgba(131,21,231,0.08)]">
+
+                        <div class="flex items-start gap-3">
+                            <div
+                                class="p-2 rounded-lg border border-primary bg-[#8315e71f] flex items-center justify-center shrink-0">
+                                <MessagesSquare class="text-primary" :size="24" />
+                            </div>
+
+                            <div class="relative z-10 min-w-0 flex-1">
+                                <h3 class="text-primary text-xl xs:text-2xl leading-tight">Let's Talk</h3>
+                                <p class="text-offWhite mt-2 text-sm xs:text-base leading-relaxed">
+                                    Have a project in mind?<br>I'd love to hear about it.
+                                </p>
+                            </div>
+                        </div>
+
+                        <base-btn class="w-full py-3 border-0 shadow-[0_0_20px_rgba(131,21,231,0.35)]"
+                            @click="scrollToContactForm">
+                            Contact Me
+                            <MoveRight :size="18" class="ml-2" />
+                        </base-btn>
+                    </div>
+
+                    <!-- theme toggle btn -->
+                    <div class="mt-auto pt-6 border-t border-[#1F2028] flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3 text-offWhite">
+                            <Moon :size="18" class="text-white" />
+                            <span>Dark Mode</span>
+                        </div>
+
+                        <theme-toggeler-btn />
+                    </div>
+
+                </div>
+            </div>
+
+        </Transition>
+    </nav>
+
 </template>
 
 <script setup lang="ts">
+import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import ThemeToggelerBtn from './ThemeToggelerBtn.vue';
 import Logo from './Logo.vue';
-import { FileCode, Folder, House, Menu, Moon, X } from '@lucide/vue';
+import BaseBtn from '../components/BaseBtn.vue';
+import GithubLink from '../components/GithubLink.vue';
+import LinkedinLink from '../components/LinkedinLink.vue';
+import FacebookLink from '../components/FacebookLink.vue';
+import MailLink from '../components/MailLink.vue';
+import { FileCode, Folder, House, Menu, MessagesSquare, X, MoveRight, Moon } from '@lucide/vue';
 
+const route = useRoute();
+const router = useRouter();
+const isSidebarOpen = ref(false);
+
+let previousBodyOverflow = '';
+let previousHtmlOverflow = '';
+let isPageScrollLocked = false;
+let sidebarLeaveResolvers: (() => void)[] = [];
+
+const lockPageScroll = () => {
+    if (isPageScrollLocked) {
+        return;
+    }
+
+    previousBodyOverflow = document.body.style.overflow;
+    previousHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    isPageScrollLocked = true;
+};
+
+const unlockPageScroll = () => {
+    if (!isPageScrollLocked) {
+        return;
+    }
+
+    document.body.style.overflow = previousBodyOverflow;
+    document.documentElement.style.overflow = previousHtmlOverflow;
+    isPageScrollLocked = false;
+};
+
+const openSidebar = () => {
+    isSidebarOpen.value = true;
+};
+
+const closeSidebar = () => {
+    isSidebarOpen.value = false;
+};
+
+const waitForSidebarLeave = () => new Promise<void>((resolve) => {
+    if (!isSidebarOpen.value) {
+        resolve();
+        return;
+    }
+
+    sidebarLeaveResolvers.push(resolve);
+});
+
+const handleSidebarAfterLeave = () => {
+    unlockPageScroll();
+    sidebarLeaveResolvers.forEach((resolve) => resolve());
+    sidebarLeaveResolvers = [];
+};
+
+const scrollContactIntoView = () => {
+    const contactForm = document.getElementById('contact-form');
+
+    if (contactForm) {
+        contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+};
+
+const scrollToContactForm = async () => {
+    const waitForCloseAnimation = waitForSidebarLeave();
+    closeSidebar();
+    await waitForCloseAnimation;
+
+    if (route.name !== 'home') {
+        await router.push({ name: 'home' });
+        await nextTick();
+    }
+
+    window.requestAnimationFrame(scrollContactIntoView);
+};
+
+watch(isSidebarOpen, (isOpen) => {
+    if (isOpen) {
+        lockPageScroll();
+    }
+});
+
+onBeforeUnmount(() => {
+    if (isPageScrollLocked) {
+        unlockPageScroll();
+    }
+});
 </script>
-
-<style>
-.active-tab {
-    color: var(--color-primary);
-    border-bottom: var(--color-primary) 2px solid;
-    padding-bottom: 8px;
-}
-</style>

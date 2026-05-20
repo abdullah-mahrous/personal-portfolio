@@ -5,10 +5,10 @@
         <span class="order-3 sm:order-2 text-muted">&copy; 2026 Abdullah Mahrous. All rights reserved.</span>
 
         <div class="order-2 sm:order-3 flex flex-wrap justify-center sm:justify-end gap-6 sm:mr-15 lg:mr-4">
-            <github-link />
-            <linkedin-link />
-            <facebook-link />
-            <mail-link />
+            <github-link :icon-size="24" />
+            <linkedin-link :icon-size="24" />
+            <facebook-link :icon-size="24" />
+            <mail-link :icon-size="24" />
         </div>
     </footer>
 

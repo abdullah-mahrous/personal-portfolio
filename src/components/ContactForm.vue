@@ -1,5 +1,5 @@
 <template>
-    <section
+    <section id="contact-form"
         class="flex my-10 sm:my-12 rounded-xl base-border bg-[linear-gradient(135deg,#10111800_0%,#0D0E14_100%)] px-4 py-5 sm:px-6 md:px-8 md:py-6 flex-col lg:flex-row gap-8 lg:items-center lg:justify-between relative overflow-hidden">
 
         <!-- top right corner glow effect cause -->
@@ -44,6 +44,7 @@
 </template>
 
 <script setup lang="ts">
+import { Send } from '@lucide/vue';
 import BaseBtn from './BaseBtn.vue';
 import BaseInput from './BaseInput.vue';
 </script>

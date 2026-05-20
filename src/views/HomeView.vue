@@ -1,12 +1,4 @@
 <template>
-    <!-- search if there is host for back-end -->
-    <!-- integrate blogs, projects adding if back-end is applicable -->
-    <!-- finish UI -->
-    <!-- add functionality -->
-    <!-- add comments -->
-    <!-- validate ts -->
-    <!-- integrate back-end if applicable -->
-    <!-- delete unused files eg. ctaBanner, imgs -->
     <main class="mb-4 sm:mb-8 px-4 sm:px-6 md:px-8 lg:px-16 overflow-x-hidden">
         <section class="pt-6 sm:pt-10">
             <div class="flex flex-col-reverse gap-4 xs:gap-6 sm:flex-row sm:items-center md:gap-8 lg:gap-10">
@@ -44,10 +36,10 @@
                     </div>
 
                     <div class="flex flex-wrap justify-between xs:justify-start gap-4 xs:gap-8 sm:gap-6 mt-6">
-                        <github-link class="hero-socials base-border" />
-                        <linkedin-link class="hero-socials base-border" />
-                        <facebook-link class="hero-socials base-border" />
-                        <mail-link class="hero-socials base-border" />
+                        <github-link class="hero-socials base-border p-4" :icon-size="24" />
+                        <linkedin-link class="hero-socials base-border p-4" :icon-size="24" />
+                        <facebook-link class="hero-socials base-border p-4" :icon-size="24" />
+                        <mail-link class="hero-socials base-border p-4" :icon-size="24" />
                     </div>
 
                 </div>
@@ -243,7 +235,7 @@
 </template>
 
 <script setup lang="ts">
-import { Download, FolderGit2, MoveRight, ShieldCheck, User2, Lightbulb, Zap, Box, Send } from '@lucide/vue';
+import { Download, FolderGit2, MoveRight, ShieldCheck, User2, Lightbulb, Zap, Box } from '@lucide/vue';
 import BaseBtn from '../components/BaseBtn.vue';
 import GithubLink from '../components/GithubLink.vue';
 import LinkedinLink from '../components/LinkedinLink.vue';
@@ -253,7 +245,6 @@ import StatsCard from '../components/StatsCard.vue';
 import HomeSections from '../components/HomeSections.vue';
 import TechCard from '../components/TechCard.vue';
 import ProjectCard from '../components/ProjectCard.vue';
-import BaseInput from '../components/BaseInput.vue';
 import ContactForm from '../components/ContactForm.vue';
 
 type FeaturedProject = {
