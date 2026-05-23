@@ -4,16 +4,12 @@
             class="rounded-lg mb-6 sm:mb-8 w-full object-cover h-48 sm:h-56 lg:h-70" loading="lazy">
 
         <h5 class="text-lg sm:text-xl font-bold mb-4 wrap-break-word">{{ projectName }}</h5>
-        <p class="card-summary card-text mb-4 relative">
+        <p class="card-text mb-4 relative min-h-18">
             {{ projectSummary }}
         </p>
 
         <div class="flex flex-wrap gap-2 sm:gap-3 mb-6 content-start min-h-18">
-            <span v-for="tag in tags" :key="tag" class="px-2 py-1.5 sm:p-2 rounded-lg border text-xs sm:text-sm" :style="{
-                backgroundColor: getTagColor(tag).bg,
-                borderColor: getTagColor(tag).border,
-                color: getTagColor(tag).text
-            }">
+            <span v-for="tag in tags" :key="tag" class="px-2 py-1.5 sm:p-2 rounded-lg bg-[#1d1f27] border-[#1e2028] text-xs sm:text-sm">
                 {{ tag }}
             </span>
         </div>
@@ -37,23 +33,4 @@ defineProps<{
     tags: string[],
     projectLink: string
 }>()
-
-const getTagColor = (tag: string) => {
-    const colors = [
-        { bg: '#8315e71f', text: '#C084FC', border: '#8315e740' },
-        { bg: '#1e40af1f', text: '#60A5FA', border: '#1e40af40' },
-        { bg: '#16a34a1f', text: '#4ade80', border: '#16a34a40' },
-        { bg: '#ea58341f', text: '#fb923c', border: '#ea583440' },
-        { bg: '#dc26351f', text: '#f87171', border: '#dc263540' },
-        { bg: '#0891b21f', text: '#06b6d4', border: '#0891b240' },
-    ];
-
-    let hash = 0;
-    for (let i = 0; i < tag.length; i++) {
-        hash = ((hash << 5) - hash) + tag.charCodeAt(i);
-        hash = hash & hash;
-    }
-
-    return colors[Math.abs(hash) % colors.length];
-}
 </script>

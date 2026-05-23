@@ -17,8 +17,8 @@
                     </router-link>
                 </span>
                 <span class="nav-link">
-                    <router-link to="/blog" class="desktop-nav-link" active-class="desktop-nav-link-active">
-                        Blog
+                    <router-link to="/journal" class="desktop-nav-link" active-class="desktop-nav-link-active">
+                        Dev Journal
                     </router-link>
                 </span>
             </li>

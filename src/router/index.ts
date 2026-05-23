@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
 
 const routes = [
   {
@@ -12,13 +13,44 @@ const routes = [
     component: () => import('../views/ProjectsView.vue')
   },
   {
-    path: '/blog',
-    name: 'blog',
-    component: () => import('../views/BlogView.vue')
+    path: '/journal',
+    name: 'journal',
+    component: () => import('../views/JournalView.vue')
+  },
+  {
+    path: '/notes/:id',
+    name: 'note',
+    component: () => import('../views/NoteView.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/LoginView.vue')
+  },
+  {
+    path: '/admin-pannel',
+    name: 'adminPannel',
+    component: () => import('../views/AdminPannel.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
 export const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+router.beforeEach((to) => {
+  const authStore = useAuthStore()
+
+  if (to.meta.requiresAuth && !authStore.isAuthorized) {
+    return {
+      name: 'login',
+      query: {
+        redirect: to.fullPath
+      }
+    }
+  }
 })

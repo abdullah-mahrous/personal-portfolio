@@ -228,6 +228,19 @@
                     :project-link="project.projectLink" />
             </div>
         </home-sections>
+        
+        <home-sections class="mt-16 sm:mt-20" title="Latest Dev Notes" :has-link="true" route-name="journal"
+            link-text="Dev Notes">
+            <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+
+                <router-link v-for="note in featuredNotes" :key="note.id" :to="{ name: 'note', params: { id: note.id } }" class="no-underline cursor-pointer">
+                    <note-card class="h-full w-full"
+                        :img-src="note.imgSrc" :title="note.title"
+                        :content="note.content" :creation-date="note.creationDate" :reading-time="note.readingTime" />
+                </router-link>
+
+            </div>
+        </home-sections>
 
         <!-- contact form -->
         <contact-form />
@@ -246,6 +259,7 @@ import HomeSections from '../components/HomeSections.vue';
 import TechCard from '../components/TechCard.vue';
 import ProjectCard from '../components/ProjectCard.vue';
 import ContactForm from '../components/ContactForm.vue';
+import NoteCard from '../components/NoteCard.vue';
 
 type FeaturedProject = {
     id: number;
@@ -254,6 +268,15 @@ type FeaturedProject = {
     projectSummary: string;
     tags: string[];
     projectLink: string;
+};
+
+type FeaturedNote = {
+    id: number;
+    imgSrc: string;
+    title: string;
+    content: string;
+    creationDate: string;
+    readingTime: number;
 };
 
 const featuredProjects: FeaturedProject[] = [
@@ -284,6 +307,27 @@ const featuredProjects: FeaturedProject[] = [
         tags: ['Vue3', 'Vuetify', 'Vite'],
         projectLink: 'https://github.com/abdullah-mahrous/TeamsMaker-Front-End',
     },
+];
+
+const featuredNotes: FeaturedNote[] = [
+    {
+        id: 1,
+        imgSrc: '/src/assets/original-portfolio.png',
+        title: 'DoQL',
+        content:
+            'This note covers the architectural decisions, tech stack, and development process behind DoQL, highlighting key features and challenges overcome during its creation. Whether you\'re interested in desktop app development, database design, or just want to see how DoQL was built, this note provides an in-depth look at the project from start to finish.',
+        creationDate: 'Aug 15, 2024',
+        readingTime: 5
+    },
+    {
+        id: 1,
+        imgSrc: '/src/assets/abdo-photo.jpeg',
+        title: 'DoQL',
+        content:
+            'An open-source desktop app to design ERDs, export SQL for SQLite/MySQL/SQL Server',
+        creationDate: 'Aug 15, 2024',
+        readingTime: 5
+    }
 ];
 
 const downloadCV = () => {
