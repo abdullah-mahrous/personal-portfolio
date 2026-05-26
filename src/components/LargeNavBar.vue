@@ -5,19 +5,21 @@
                 <Logo />
             </li>
 
-            <li class="muted text-offWhite flex items-center justify-center text-[18px]">
+            <li class="muted text-slate-600 dark:text-offWhite flex items-center justify-center text-[18px]">
                 <span class="nav-link">
-                    <router-link to="/" class="desktop-nav-link" active-class="desktop-nav-link-active">
+                    <router-link :to="{ name: 'home' }" class="desktop-nav-link" active-class="desktop-nav-link-active">
                         Home
                     </router-link>
                 </span>
                 <span class="nav-link">
-                    <router-link to="/projects" class="desktop-nav-link" active-class="desktop-nav-link-active">
+                    <router-link :to="{ name: 'projects' }" class="desktop-nav-link"
+                        active-class="desktop-nav-link-active">
                         Projects
                     </router-link>
                 </span>
                 <span class="nav-link">
-                    <router-link to="/journal" class="desktop-nav-link" active-class="desktop-nav-link-active">
+                    <router-link :to="{ name: 'journal' }" class="desktop-nav-link"
+                        active-class="desktop-nav-link-active">
                         Dev Journal
                     </router-link>
                 </span>
@@ -26,12 +28,10 @@
             <li class="flex items-center">
                 <theme-toggeler-btn class="mr-8" />
 
-                <router-link to="/contact">
-                    <base-btn class="px-4 py-2">
-                        Let's Talk
-                        <MoveRight class="ml-3" />
-                    </base-btn>
-                </router-link>
+                <base-btn class="px-4 py-2" @click="handleHomeScroll(scrollToContact)">
+                    Let's Talk
+                    <MoveRight class="ml-3" />
+                </base-btn>
             </li>
         </ul>
     </nav>
@@ -39,6 +39,7 @@
 
 <script setup lang="ts">
 import { MoveRight } from '@lucide/vue';
+import { scrollToContact, handleHomeScroll } from '../services/scrollService';
 import ThemeToggelerBtn from './ThemeToggelerBtn.vue';
 import BaseBtn from './BaseBtn.vue';
 import Logo from './Logo.vue';

@@ -3,7 +3,7 @@
         <h1 class="mb-5 font-bold text-4xl sm:text-5xl">
             Projects
         </h1>
-        <p class="text-offWhite mb-8 text-base sm:text-lg">
+        <p class="text-slate-600 dark:text-offWhite mb-8 text-base sm:text-lg">
             Things I've built so far
         </p>
 
@@ -29,14 +29,14 @@
 
         <!-- cta banner -->
         <section
-            class="mt-10 mb-12 rounded-xl base-border bg-[linear-gradient(135deg,#10111800_0%,#0D0E14_100%)] px-5 py-4 md:px-7 md:py-5 flex flex-col gap-5 md:flex-row md:items-center md:justify-between relative overflow-hidden">
+            class="mt-10 mb-12 rounded-xl base-border bg-white dark:bg-[linear-gradient(135deg,#10111800_0%,#0D0E14_100%)] dark:bg-darkCard px-5 py-4 md:px-7 md:py-5 flex flex-col gap-5 md:flex-row md:items-center md:justify-between relative overflow-hidden">
             <div
                 class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_5%_45%,rgba(131,21,231,0.20),transparent_30%)]">
             </div>
 
             <div class="flex items-center sm:items-center gap-4 relative z-10">
                 <div
-                    class="p-2 rounded-xl border border-[#2A2742] bg-[linear-gradient(145deg,#171427,#0E0D17)] shadow-[inset_0_0_20px_rgba(131,21,231,0.23),0_0_22px_rgba(131,21,231,0.12)] flex items-center justify-center">
+                    class="p-2 rounded-xl border border-gray-200 dark:border-[#2A2742] bg-gradient-to-br from-slate-50 to-slate-100 dark:bg-[linear-gradient(145deg,#171427,#0E0D17)] shadow-[inset_0_0_20px_rgba(131,21,231,0.23),0_0_22px_rgba(131,21,231,0.12)] flex items-center justify-center">
 
                     <svg viewBox="0 0 24 24" fill="none" class="w-14 h-14">
                         <path d="M12 3L19 7V17L12 21L5 17V7L12 3Z" stroke="#9D4DFF" stroke-width="1.2"
@@ -49,14 +49,15 @@
                 </div>
 
                 <div>
-                    <h3 class="text-white text-2xl sm:text-3xl lg:text-3xl font-bold leading-tight">Have an idea in
+                    <h3 class="text-lightText dark:text-white text-2xl sm:text-3xl lg:text-3xl font-bold leading-tight">
+                        Have an idea in
                         mind?</h3>
-                    <p class="text-offWhite mt-1 xs:text-lg">Let's turn it into a real product.</p>
+                    <p class="text-slate-600 dark:text-offWhite mt-1 xs:text-lg">Let's turn it into a real product.</p>
                 </div>
             </div>
 
             <base-btn class="relative z-10 w-full sm:w-auto px-7 py-3 border-0! shadow-[0_0_20px_rgba(131,21,231,0.35)]"
-                @click="scrollToFooter">
+                @click="handleHomeScroll(scrollToContact)">
                 Contact Me
                 <MoveRight class="ml-2" :size="18" />
             </base-btn>
@@ -68,6 +69,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { MoveRight } from '@lucide/vue';
+import { scrollToContact, handleHomeScroll } from '../services/scrollService';
 import BaseBtn from '../components/BaseBtn.vue';
 import ProjectCard from '../components/ProjectCard.vue';
 
@@ -170,13 +172,6 @@ const setFilter = (filter: ProjectFilter) => {
 const getDelayStyle = (index: number): Record<string, string> => ({
     '--stagger-delay': `${index * 55}ms`,
 });
-
-const scrollToFooter = () => {
-    const footer = document.querySelector('footer');
-    if (footer) {
-        footer.scrollIntoView({ behavior: 'smooth' });
-    }
-};
 </script>
 
 <style>

@@ -6,11 +6,11 @@
 
         <div class="order-2 mt-1 flex min-w-0 flex-col sm:order-1 sm:mt-2 sm:flex-1">
             <h5 class="order-1 text-xl sm:text-2xl lg:text-3xl font-bold my-4 wrap-break-word md:order-2">{{ title }}</h5>
-            <p class="order-2 text-offWhite text-sm/relaxed sm:text-base/relaxed relative line-clamp-7 lg:line-clamp-9 md:order-3">
+            <p class="order-2 text-slate-600 dark:text-offWhite text-sm/relaxed sm:text-base/relaxed relative line-clamp-7 lg:line-clamp-9 md:order-3">
                 {{ content }}
             </p>
 
-            <div class="order-3 no-underline font-medium cursor-pointer flex flex-wrap items-center gap-x-4 gap-y-1 mt-4 w-full text-muted sm:gap-x-8 sm:mt-auto sm:pt-4 md:order-1 md:mt-0 md:pt-0">
+            <div class="order-3 no-underline font-medium cursor-pointer flex flex-wrap items-center gap-x-4 gap-y-1 mt-4 w-full text-slate-500 dark:text-muted sm:gap-x-8 sm:mt-auto sm:pt-4 md:order-1 md:mt-0 md:pt-0">
                 <span class="text-sm">{{ creationDate }}</span>
                 <span class="text-sm">{{ readingTime }} min read</span>
             </div>

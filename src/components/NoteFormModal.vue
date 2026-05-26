@@ -5,57 +5,44 @@
                 <h2 class="text-2xl font-bold">
                     {{ mode === 'create' ? 'Create New Note' : 'Edit Note' }}
                 </h2>
-                <button @click="closeModal" class="cursor-pointer text-xl hover:text-primary transition-colors">✕</button>
+                <button @click="closeModal"
+                    class="cursor-pointer text-xl hover:text-primary transition-colors">✕</button>
             </div>
 
             <form @submit.prevent="handleSubmit" class="space-y-4">
                 <!-- Title -->
                 <div>
                     <label class="block text-sm font-medium mb-2">Title *</label>
-                    <base-input
-                        v-model="formData.title"
-                        type="text"
-                        placeHolder="Enter note title"
-                    />
+                    <base-input v-model="formData.title" type="text" placeHolder="Enter note title" />
                     <p v-if="errors.title" class="text-red-500 text-sm mt-1">{{ errors.title }}</p>
                 </div>
 
                 <!-- Content -->
                 <div>
                     <label class="block text-sm font-medium mb-2">Content * (Supports Markdown)</label>
-                    <textarea
-                        v-model="formData.content"
-                        placeholder="Enter note content (markdown supported)"
-                        class="base-input base-border w-full min-w-0 h-48 sm:h-64 md:h-80 bg-[#111217] rounded-lg p-4 text-white placeholder:text-muted outline-none focus:border-primary resize-vertical"
-                    ></textarea>
+                    <textarea v-model="formData.content" placeholder="Enter note content (markdown supported)"
+                        class="base-input base-border w-full min-w-0 h-48 sm:h-64 md:h-80 bg-white dark:bg-[#111217] rounded-lg p-4 text-lightText dark:text-white placeholder:text-slate-400 dark:placeholder:text-muted outline-none focus:border-primary resize-vertical"></textarea>
                     <p v-if="errors.content" class="text-red-500 text-sm mt-1">{{ errors.content }}</p>
                 </div>
 
                 <!-- Image File Upload -->
                 <div>
                     <label class="block text-sm font-medium mb-2">Image *</label>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        @change="handleImageUpload"
-                        class="base-input base-border w-full cursor-pointer"
-                    />
-                    <p class="text-offWhite text-xs mt-1">Select an image file (PNG, JPG, GIF, etc.)</p>
+                    <input type="file" accept="image/*" @change="handleImageUpload"
+                        class="base-input base-border w-full cursor-pointer" />
+                    <p class="text-slate-600 dark:text-offWhite text-xs mt-1">Select an image file (PNG, JPG, GIF, etc.)
+                    </p>
                     <p v-if="errors.imgSrc" class="text-red-500 text-sm mt-1">{{ errors.imgSrc }}</p>
                     <div v-if="imagePreview" class="mt-3 flex items-center gap-3">
                         <img :src="imagePreview" alt="Preview" class="h-16 w-16 object-cover rounded">
-                        <span class="text-sm text-offWhite">Image selected</span>
+                        <span class="text-sm text-slate-600 dark:text-offWhite">Image selected</span>
                     </div>
                 </div>
 
                 <!-- Reading Time -->
                 <div>
                     <label class="block text-sm font-medium mb-2">Reading Time (minutes) *</label>
-                    <base-input
-                        v-model.number="formData.readingTime"
-                        type="number"
-                        placeHolder="e.g., 5"
-                    />
+                    <base-input v-model.number="formData.readingTime" type="number" placeHolder="e.g., 5" />
                     <p v-if="errors.readingTime" class="text-red-500 text-sm mt-1">{{ errors.readingTime }}</p>
                 </div>
 
@@ -66,7 +53,8 @@
 
                 <!-- Buttons -->
                 <div class="flex gap-3 pt-4">
-                    <base-btn @click="closeModal" class="flex-1 p-2 !bg-transparent !border-primary !text-primary hover:!bg-primary/10">
+                    <base-btn @click="closeModal"
+                        class="flex-1 p-2 !bg-transparent !border-primary !text-primary hover:!bg-primary/10">
                         Cancel
                     </base-btn>
                     <base-btn type="submit" class="flex-1 p-2">
@@ -217,7 +205,7 @@ function handleSubmit() {
     }
 
     try {
-        const creationDate = props.mode === 'create' 
+        const creationDate = props.mode === 'create'
             ? new Date().toISOString().split('T')[0]
             : (props.note?.creationDate || new Date().toISOString().split('T')[0]);
 
@@ -227,6 +215,7 @@ function handleSubmit() {
             imgSrc: formData.value.imgSrc,
             creationDate: creationDate,
             readingTime: formData.value.readingTime,
+            comments: props.note?.comments ?? [],
         });
         closeModal();
     } catch (err) {

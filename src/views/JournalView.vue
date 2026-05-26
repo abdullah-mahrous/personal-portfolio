@@ -3,7 +3,7 @@
         <h1 class="mb-5 font-bold text-4xl sm:text-5xl max-w-175 leading-snug">
             Thoughts from my <span class="text-primary">development</span> journey
         </h1>
-        <p class="text-offWhite mb-8 text-base sm:text-lg">
+        <p class="text-slate-600 dark:text-offWhite mb-8 text-base sm:text-lg">
             A space where I share development lessons, insights, ideas and experiments.
         </p>
 

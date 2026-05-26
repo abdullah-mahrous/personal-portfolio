@@ -14,7 +14,7 @@
                     <p class="text-primary text-base sm:text-lg lg:text-xl mb-4">
                         Full-Stack Developer | Vue.js | Node.js | TypeScript | Scalable Applications
                     </p>
-                    <p class="text-offWhite text-base sm:text-lg mb-8 max-w-none lg:max-w-[75%]">
+                    <p class="text-slate-600 dark:text-offWhite text-base sm:text-lg mb-8 max-w-none lg:max-w-[75%]">
                         I build scalable web applications, focusing on performance, architecture, and user
                         experience — not just making things work, but making them last.
                     </p>
@@ -28,7 +28,7 @@
                         </router-link>
 
                         <button
-                            class="w-full sm:w-fit sm:min-w-48 lg:min-w-0 lg:w-auto cursor-pointer border-2 border-[#2A2A35] bg-transparent text-[14px] font-medium rounded-md hover:bg-[rgba(255,255,255,0.03)] hover:border-[#3A3B47] transition-colors duration-300 flex justify-center items-center px-5 sm:px-6 py-3.5 sm:py-4"
+                            class="w-full sm:w-fit sm:min-w-48 lg:min-w-0 lg:w-auto cursor-pointer border-2 border-gray-300 dark:border-[#2A2A35] bg-transparent text-lightText dark:text-white text-[14px] font-medium rounded-md dark:hover:bg-[rgba(255,255,255,0.03)] hover:border-gray-400 dark:hover:border-[#3A3B47] transition-colors duration-300 flex justify-center items-center px-5 sm:px-6 py-3.5 sm:py-4"
                             @click="downloadCV">
                             Download CV
                             <Download class="ml-3" />
@@ -125,7 +125,13 @@
                 </tech-card>
 
                 <tech-card tech-name="Express.js">
-                    <img src="@/assets/express-logo.svg" alt="express logo" class="size-12.5" />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-12.5 text-lightText dark:text-current"
+                        viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path fill="currentColor"
+                            d="M24 18.588a1.53 1.53 0 0 1-1.895-.72l-3.45-4.771l-.5-.667l-4.003 5.444a1.466 1.466 0 0 1-1.802.708l5.158-6.92l-4.798-6.251a1.595 1.595 0 0 1 1.9.666l3.576 4.83l3.596-4.81a1.435 1.435 0 0 1 1.788-.668L21.708 7.9l-2.522 3.283a.666.666 0 0 0 0 .994l4.804 6.412zM.002 11.576l.42-2.075c1.154-4.103 5.858-5.81 9.094-3.27c1.895 1.489 2.368 3.597 2.275 5.973H1.116C.943 16.447 4.005 19.009 7.92 17.7a4.08 4.08 0 0 0 2.582-2.876c.207-.666.548-.78 1.174-.588a5.42 5.42 0 0 1-2.589 3.957a6.27 6.27 0 0 1-7.306-.933a6.58 6.58 0 0 1-1.64-3.858c0-.235-.08-.455-.134-.666A88 88 0 0 1 0 11.577zm1.127-.286h9.654c-.06-3.076-2.001-5.258-4.59-5.278c-2.882-.04-4.944 2.094-5.071 5.264z" />
+                    </svg>
+
                 </tech-card>
 
                 <tech-card tech-name="MongoDB">
@@ -228,15 +234,15 @@
                     :project-link="project.projectLink" />
             </div>
         </home-sections>
-        
+
         <home-sections class="mt-16 sm:mt-20" title="Latest Dev Notes" :has-link="true" route-name="journal"
             link-text="Dev Notes">
             <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
 
-                <router-link v-for="note in featuredNotes" :key="note.id" :to="{ name: 'note', params: { id: note.id } }" class="no-underline cursor-pointer">
-                    <note-card class="h-full w-full"
-                        :img-src="note.imgSrc" :title="note.title"
-                        :content="note.content" :creation-date="note.creationDate" :reading-time="note.readingTime" />
+                <router-link v-for="note in featuredNotes" :key="note.id"
+                    :to="{ name: 'note', params: { id: note.id } }" class="no-underline cursor-pointer">
+                    <note-card class="h-full w-full" :img-src="note.imgSrc" :title="note.title" :content="note.content"
+                        :creation-date="note.creationDate" :reading-time="note.readingTime" />
                 </router-link>
 
             </div>
@@ -332,7 +338,7 @@ const featuredNotes: FeaturedNote[] = [
 
 const downloadCV = () => {
     const link = document.createElement('a');
-    link.href = '../assets/Abdullah-FullStack-CV2.pdf';
+    link.href = 'https://drive.google.com/file/d/1zfS5GM5yTWD1go5zrBTKSoyL32Z600OA/view?usp=drive_link';
     link.download = 'Abdullah_Mahrous_CV.pdf';
     document.body.appendChild(link);
     link.click();

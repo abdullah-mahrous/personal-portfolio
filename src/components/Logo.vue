@@ -1,30 +1,10 @@
 <template>
-    <router-link to="/" class="font-bold text-4xl cursor-pointer no-underline hover:no-underline" @click="handleLogoClick">
+    <span class="font-bold text-black dark:text-white text-4xl cursor-pointer no-underline hover:no-underline"
+        @click.prevent="handleHomeScroll(scrollUp)">
         <span class="text-primary">A</span>M
-    </router-link>
+    </span>
 </template>
 
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router';
-
-const route = useRoute();
-const router = useRouter();
-
-const smoothScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-};
-
-const handleLogoClick = async (event: MouseEvent) => {
-    event.preventDefault();
-
-    if (route.name === 'home' || route.path === '/') {
-        smoothScrollToTop();
-        return;
-    }
-
-    await router.push({ name: 'home' });
-    window.requestAnimationFrame(() => {
-        smoothScrollToTop();
-    });
-};
+import { handleHomeScroll, scrollUp } from '../services/scrollService';
 </script>

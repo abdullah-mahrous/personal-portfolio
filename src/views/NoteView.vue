@@ -14,7 +14,8 @@
                     {{ note.title }}
                 </h1>
 
-                <div class="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm sm:text-base text-muted">
+                <div
+                    class="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm sm:text-base text-slate-500 dark:text-muted">
                     <time :datetime="note.creationDate">{{ note.creationDate }}</time>
                     <span aria-hidden="true">&middot;</span>
                     <span>{{ note.readingTime }}</span>
@@ -26,21 +27,22 @@
                     class="w-full h-56 xs:h-72 sm:h-96 lg:h-128 rounded-lg object-cover" />
             </figure>
 
-            <div class="mx-auto mt-8 whitespace-pre-line text-offWhite text-base/loose sm:text-lg/loose">
+            <div
+                class="mx-auto mt-8 whitespace-pre-line text-slate-700 dark:text-offWhite text-base/loose sm:text-lg/loose">
                 {{ note.content }}
             </div>
 
             <!-- Comments and share section -->
-            <div class="mt-12 flex items-center text-lg ">
+            <div class="mt-12 ml-2 flex items-center text-lg">
                 <span class="flex items-center">
                     <message-circle class="inline-block mr-3 cursor-pointer" />
                     {{ note.comments.length }}
                 </span>
-                <share2-icon class="inline-block ml-4 cursor-pointer" />
+                <share2-icon class="inline-block ml-4 cursor-pointer" tabindex="0" />
             </div>
 
             <!-- Comment Section -->
-            <comment-section class="mt-12" :comments="note.comments" />
+            <comment-section class="mt-6" :comments="note.comments" />
         </article>
     </main>
 </template>

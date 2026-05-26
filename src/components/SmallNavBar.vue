@@ -7,8 +7,7 @@
             </li>
 
             <li class="flex items-center">
-                <button type="button" class="base-border rounded-lg p-1" aria-label="Open menu"
-                    @click="openSidebar">
+                <button type="button" class="base-border rounded-lg p-1" aria-label="Open menu" @click="openSidebar">
                     <Menu :size="28" />
                 </button>
             </li>
@@ -23,17 +22,18 @@
         leave-from-class="mobile-sidebar-leave-from opacity-100" leave-to-class="mobile-sidebar-leave-to opacity-0"
         @after-leave="handleSidebarAfterLeave">
 
-        <div v-if="isSidebarOpen" class="bg-[#0b0b0f91] z-60 w-full h-screen fixed inset-0 block sm:hidden"
+        <div v-if="isSidebarOpen"
+            class="bg-slate-900/35 dark:bg-[#0b0b0f91] z-60 w-full h-screen fixed inset-0 block sm:hidden"
             @click.self="closeSidebar">
 
             <div
-                class="mobile-sidebar-panel translate-x-0 opacity-100 transition-[transform,opacity] duration-[280ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[transform,opacity] bg-darkBg p-6 w-3/4 h-full overflow-y-auto flex flex-col">
+                class="mobile-sidebar-panel translate-x-0 opacity-100 transition-[transform,opacity] duration-[280ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[transform,opacity] bg-white dark:bg-darkBg text-lightText dark:text-darkText p-6 w-3/4 h-full overflow-y-auto flex flex-col">
 
                 <div class="flex items-center justify-between">
                     <logo />
 
-                    <button type="button" class="border-[#1F2028] rounded-lg p-1 border-2" aria-label="Close menu"
-                        @click="closeSidebar">
+                    <button type="button" class="border-gray-200 dark:border-[#1F2028] rounded-lg p-1 border-2"
+                        aria-label="Close menu" @click="closeSidebar">
                         <X />
                     </button>
                 </div>
@@ -58,8 +58,8 @@
                     </router-link>
                 </div>
 
-                <div class="border-t border-[#1F2028] pt-8">
-                    <p class="text-offWhite">
+                <div class="border-t border-gray-200 dark:border-[#1F2028] pt-8">
+                    <p class="text-slate-700 dark:text-offWhite">
                         Let's Connect
                     </p>
 
@@ -74,7 +74,7 @@
 
                 <!-- cta banner -->
                 <div
-                    class="mt-10 mb-12 rounded-xl base-border bg-[linear-gradient(135deg,#101118_0%,#0D0E14_100%)] px-4 py-4 flex flex-col gap-4 shadow-[0_0_24px_rgba(131,21,231,0.08)]">
+                    class="mt-10 mb-12 rounded-xl base-border bg-white dark:bg-[linear-gradient(135deg,#101118_0%,#0D0E14_100%)] px-4 py-4 flex flex-col gap-4 shadow-[0_8px_30px_rgba(17,24,39,0.06)] dark:shadow-[0_0_24px_rgba(131,21,231,0.08)]">
 
                     <div class="flex items-start gap-3">
                         <div
@@ -84,7 +84,7 @@
 
                         <div class="relative z-10 min-w-0 flex-1">
                             <h3 class="text-primary text-xl xs:text-2xl leading-tight">Let's Talk</h3>
-                            <p class="text-offWhite mt-2 text-sm xs:text-base leading-relaxed">
+                            <p class="text-slate-600 dark:text-offWhite mt-2 text-sm xs:text-base leading-relaxed">
                                 Have a project in mind?<br>I'd love to hear about it.
                             </p>
                         </div>
@@ -98,10 +98,11 @@
                 </div>
 
                 <!-- theme toggle btn -->
-                <div class="mt-auto pt-6 border-t border-[#1F2028] flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-3 text-offWhite">
-                        <Moon :size="18" class="text-white" />
-                        <span>Dark Mode</span>
+                <div
+                    class="mt-auto pt-6 border-t border-gray-200 dark:border-[#1F2028] flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3 text-slate-700 dark:text-offWhite">
+                        <component :is="isDark ? Moon : Sun" :size="18" class="text-yellow-500 dark:text-white" />
+                        <span>{{ themeModeLabel }}</span>
                     </div>
 
                     <theme-toggeler-btn />
@@ -115,8 +116,8 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { scrollToContact, handleHomeScroll } from '../services/scrollService';
 import ThemeToggelerBtn from './ThemeToggelerBtn.vue';
 import Logo from './Logo.vue';
 import BaseBtn from '../components/BaseBtn.vue';
@@ -124,16 +125,18 @@ import GithubLink from '../components/GithubLink.vue';
 import LinkedinLink from '../components/LinkedinLink.vue';
 import FacebookLink from '../components/FacebookLink.vue';
 import MailLink from '../components/MailLink.vue';
-import { FileCode, Folder, House, Menu, MessagesSquare, X, MoveRight, Moon } from '@lucide/vue';
+import { FileCode, Folder, House, Menu, MessagesSquare, X, MoveRight, Moon, Sun } from '@lucide/vue';
+import { isDarkMode, subscribeTheme } from '../services/themeService';
 
-const route = useRoute();
-const router = useRouter();
 const isSidebarOpen = ref(false);
+const isDark = ref(isDarkMode());
+const themeModeLabel = computed(() => isDark.value ? 'Dark Mode' : 'Light Mode');
 
 let previousBodyOverflow = '';
 let previousHtmlOverflow = '';
 let isPageScrollLocked = false;
 let sidebarLeaveResolvers: (() => void)[] = [];
+let unsubscribeTheme: (() => void) | undefined;
 
 const lockPageScroll = () => {
     if (isPageScrollLocked) {
@@ -180,25 +183,12 @@ const handleSidebarAfterLeave = () => {
     sidebarLeaveResolvers = [];
 };
 
-const scrollContactIntoView = () => {
-    const contactForm = document.getElementById('contact-form');
-
-    if (contactForm) {
-        contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-};
-
 const scrollToContactForm = async () => {
     const waitForCloseAnimation = waitForSidebarLeave();
     closeSidebar();
     await waitForCloseAnimation;
 
-    if (route.name !== 'home') {
-        await router.push({ name: 'home' });
-        await nextTick();
-    }
-
-    window.requestAnimationFrame(scrollContactIntoView);
+    await handleHomeScroll(scrollToContact);
 };
 
 watch(isSidebarOpen, (isOpen) => {
@@ -207,7 +197,15 @@ watch(isSidebarOpen, (isOpen) => {
     }
 });
 
+onMounted(() => {
+    unsubscribeTheme = subscribeTheme((isDarkTheme) => {
+        isDark.value = isDarkTheme;
+    });
+});
+
 onBeforeUnmount(() => {
+    unsubscribeTheme?.();
+
     if (isPageScrollLocked) {
         unlockPageScroll();
     }

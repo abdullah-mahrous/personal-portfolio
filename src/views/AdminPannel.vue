@@ -12,7 +12,7 @@
 
         <!-- Loading State -->
         <div v-if="notesStore.loading" class="text-center py-12">
-            <p class="text-offWhite">Loading notes...</p>
+            <p class="text-slate-600 dark:text-offWhite">Loading notes...</p>
         </div>
 
         <!-- Error State -->
@@ -22,7 +22,7 @@
 
         <!-- Empty State -->
         <div v-else-if="notesStore.notes.length === 0" class="text-center py-12">
-            <p class="text-offWhite text-lg mb-4">No notes yet. Create your first one!</p>
+            <p class="text-slate-600 dark:text-offWhite text-lg mb-4">No notes yet. Create your first one!</p>
         </div>
 
         <!-- Notes Table -->
@@ -37,33 +37,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr
-                        v-for="note in notesStore.notes"
-                        :key="note.id"
+                    <tr v-for="note in notesStore.notes" :key="note.id"
                         class="border-b border-primary/10 hover:bg-primary/5 transition-colors">
                         <td class="py-4 px-4">
                             <div class="truncate">
                                 <p class="font-medium truncate">{{ note.title }}</p>
-                                <p class="text-offWhite text-sm truncate sm:hidden">
+                                <p class="text-slate-600 dark:text-offWhite text-sm truncate sm:hidden">
                                     {{ formatDate(note.creationDate) }}
                                 </p>
                             </div>
                         </td>
-                        <td class="py-4 px-4 text-offWhite hidden sm:table-cell">
+                        <td class="py-4 px-4 text-slate-500 dark:text-offWhite hidden sm:table-cell">
                             {{ formatDate(note.creationDate) }}
                         </td>
-                        <td class="py-4 px-4 text-offWhite hidden sm:table-cell">
+                        <td class="py-4 px-4 text-slate-500 dark:text-offWhite hidden sm:table-cell">
                             {{ note.readingTime }} min
                         </td>
                         <td class="py-4 px-4 text-right">
                             <div class="flex justify-end gap-2">
-                                <button
-                                    @click="openEditModal(note)"
+                                <button @click="openEditModal(note)"
                                     class="px-3 py-1 text-sm font-medium text-primary border border-primary rounded hover:bg-primary/10 transition-colors cursor-pointer">
                                     Edit
                                 </button>
-                                <button
-                                    @click="openDeleteModal(note)"
+                                <button @click="openDeleteModal(note)"
                                     class="px-3 py-1 text-sm font-medium text-red-500 border border-red-500 rounded hover:bg-red-500/10 transition-colors cursor-pointer">
                                     Delete
                                 </button>
@@ -76,20 +72,11 @@
     </main>
 
     <!-- Modals -->
-    <note-form-modal
-        :isOpen="activeModal === 'form'"
-        :note="selectedNote"
-        :mode="formMode"
-        @close="closeModal"
-        @save="handleSaveNote"
-    />
+    <note-form-modal :isOpen="activeModal === 'form'" :note="selectedNote" :mode="formMode" @close="closeModal"
+        @save="handleSaveNote" />
 
-    <note-delete-confirm-modal
-        :isOpen="activeModal === 'delete'"
-        :noteName="selectedNote?.title || ''"
-        @confirm="handleDeleteNote"
-        @cancel="closeModal"
-    />
+    <note-delete-confirm-modal :isOpen="activeModal === 'delete'" :noteName="selectedNote?.title || ''"
+        @confirm="handleDeleteNote" @cancel="closeModal" />
 </template>
 
 <script setup lang="ts">

@@ -1,9 +1,9 @@
 <template>
     <div class="flex flex-col items-center">
-        <div class="bg-[#111217] base-border p-2 flex justify-center items-center rounded-lg">
+        <div class="bg-white dark:bg-[#111217] base-border p-2 flex justify-center items-center rounded-lg">
             <slot></slot>
         </div>
-        <span class="text-sm text-offWhite mt-2"> {{ techName }} </span>
+        <span class="text-sm text-slate-700 dark:text-offWhite mt-2"> {{ techName }} </span>
     </div>
 </template>
 
