@@ -16,90 +16,161 @@
 
                 <div
                     class="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm sm:text-base text-slate-500 dark:text-muted">
-                    <time :datetime="note.creationDate">{{ note.creationDate }}</time>
+                    <time :datetime="formatDate(note.creationDate)">{{ formatDate(note.creationDate) }}</time>
                     <span aria-hidden="true">&middot;</span>
-                    <span>{{ note.readingTime }}</span>
+                    <span>{{ note.readTime }} min read</span>
                 </div>
             </header>
 
             <figure class="mx-auto mt-6">
-                <img :src="note.imgSrc" :alt="`${note.title} cover image`" loading="lazy"
+                <img :src="note.imgURL" :alt="`${note.title} cover image`" loading="lazy"
                     class="w-full h-56 xs:h-72 sm:h-96 lg:h-128 rounded-lg object-cover" />
             </figure>
 
-            <div
-                class="mx-auto mt-8 whitespace-pre-line text-slate-700 dark:text-offWhite text-base/loose sm:text-lg/loose">
-                {{ note.content }}
+            <div v-html="renderedContent"
+                class="mx-auto mt-12 text-slate-700 dark:text-white prose sm:prose-lg dark:prose-invert max-w-none">
             </div>
 
             <!-- Comments and share section -->
             <div class="mt-12 ml-2 flex items-center text-lg">
                 <span class="flex items-center">
-                    <message-circle class="inline-block mr-3 cursor-pointer" />
+                    <message-circle class="inline-block mr-3" />
                     {{ note.comments.length }}
                 </span>
-                <share2-icon class="inline-block ml-4 cursor-pointer" tabindex="0" />
+
+                <span @click="openShareOptions"
+                    class="inline-block ml-4 cursor-pointer hover:bg-muted/15 p-2 hover:rounded-full transition-all duration-300 ease-in-out"
+                    role="button" tabindex="0" @keydown.enter="openShareOptions" @keydown.space="openShareOptions">
+                    <share2-icon />
+                </span>
             </div>
 
-            <!-- Comment Section -->
-            <comment-section class="mt-6" :comments="note.comments" />
+            <!-- Share Options Modal -->
+            <div v-if="showShareOptions" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                <div class="bg-white dark:bg-slate-900 rounded-lg p-6 max-w-sm w-full mx-4 shadow-lg">
+                    <h2 class="text-lg font-semibold mb-4">Share this note</h2>
+                    <div class="space-y-3">
+                        <button @click="copyToClipboard"
+                            class="w-full px-4 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors">
+                            📋 Copy link
+                        </button>
+                        <button @click="shareViaEmail"
+                            class="w-full px-4 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors">
+                            ✉️ Share via email
+                        </button>
+                        <button @click="shareViaTwitter"
+                            class="w-full px-4 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors">
+                            𝕏 Share on Twitter
+                        </button>
+                        <button @click="shareViaLinkedIn"
+                            class="w-full px-4 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors">
+                            👔 Share on LinkedIn
+                        </button>
+                    </div>
+                    <button @click="showShareOptions = false"
+                        class="w-full mt-4 px-4 py-2 text-center hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors">
+                        Close
+                    </button>
+                </div>
+            </div>
+
+            <!-- Comment Section - Only render when note is loaded -->
+            <comment-section v-if="note.id" class="mt-6" :noteId="note.id" />
         </article>
     </main>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useNotesStore } from '../stores/notes';
+import { useRoute } from 'vue-router';
 import { MessageCircle, MoveLeft, Share2Icon } from '@lucide/vue';
 import CommentSection from '../components/CommentSection.vue';
+import { formatDate } from '../composables/dateFormater';
+import { type Note } from '../services/notesService';
+import { type NoteComment } from '../services/commentsService';
+import { marked } from 'marked';
 
-type Note = {
-    id: number,
-    imgSrc: string,
-    title: string,
-    content: string,
-    creationDate: string,
-    readingTime: string,
-    comments: NoteComment[]
-}
+const route = useRoute();
+const notesStore = useNotesStore();
+const showShareOptions = ref(false);
 
-type NoteComment = {
-    id: number,
-    name: string,
-    comment: string,
-    date: string
-}
+let note = ref<Note>({
+    id: '',
+    title: '',
+    content: '',
+    creationDate: new Date(),
+    readTime: 0,
+    imgURL: '',
+    imgId: '',
+    comments: [] as NoteComment[],
+});
+let renderedContent = ref<string>('');
 
-const note: Note = {
-    id: 1,
-    imgSrc: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bm90ZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60',
-    title: 'Understanding Vue 3 Composition API - A Comprehensive Guide for Developers',
-    content: 'An open-source desktop app to design ERDs, export SQL for SQLite/MySQL/SQL Server, and securely share password-protected project files.\n\n This note covers the architectural decisions, tech stack, and development process behind DoQL, highlighting key features and challenges overcome during its creation. Whether you\'re interested in desktop app development, database design, or just want to see how DoQL was built,\n this note provides an in-depth look at the project from start to finish. \n\nKey topics covered include: \n- The motivation behind creating DoQL and the problem it solves \n- The tech stack chosen for the project and why \n- Architectural decisions and how they shaped the app\'s design \n- Challenges faced during development and how they were overcome \n- A walkthrough of the app\'s key features and functionality \nWhether you\'re a developer looking to learn from DoQL\'s development process or just curious about how it works, this note provides a comprehensive overview of the project and its journey from idea to open-source release.\n\n\n lorem ipsum dolor sit amet, consectetur adipiscing elit,\n sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    creationDate: 'June 15, 2024',
-    readingTime: '5 min read',
-    comments: [
-        {
-            id: 1,
-            name: 'Alice',
-            comment: 'Great note! Really helped me understand the Composition API better.',
-            date: 'June 16, 2024'
-        },
-        {
-            id: 2,
-            name: 'Bob',
-            comment: 'Thanks for sharing your insights on DoQL. Looking forward to trying it out!',
-            date: 'June 17, 2024'
-        },
-        {
-            id: 3,
-            name: 'Charlie',
-            comment: 'I found the section on architectural decisions particularly insightful.',
-            date: 'June 18, 2024'
-        },
-        {
-            id: 4,
-            name: 'Diana',
-            comment: 'Excellent breakdown of the development process. Very informative!',
-            date: 'June 19, 2024'
-        }
-    ]
-}
+const loadNote = async () => {
+    // Fetch note when component mounts
+    const fetchedNote = await notesStore.fetchNoteById(route.params.id as string);
+
+    if (fetchedNote)
+        note.value = fetchedNote;
+};
+
+marked.setOptions({
+    breaks: true,
+    gfm: true,
+});
+
+onMounted(async () => {
+    await loadNote();
+    renderedContent.value = await marked.parse(note.value.content);
+});
+
+const shareUrl = () => {
+    return `${window.location.origin}${route.fullPath}`;
+};
+
+const openShareOptions = () => {
+    // Check if native Share API is available
+    if (navigator.share) {
+        navigator.share({
+            title: note.value.title,
+            text: `Check out this note: ${note.value.title}`,
+            url: shareUrl(),
+        }).catch(err => console.log('Error sharing:', err));
+    } else {
+        // Fallback to modal
+        showShareOptions.value = true;
+    }
+};
+
+const copyToClipboard = async () => {
+    try {
+        await navigator.clipboard.writeText(shareUrl());
+        showShareOptions.value = false;
+        // Optional: Show a toast notification
+        console.log('Link copied to clipboard!');
+    } catch (err) {
+        console.error('Failed to copy:', err);
+    }
+};
+
+const shareViaEmail = () => {
+    const subject = encodeURIComponent(`Check out: ${note.value.title}`);
+    const body = encodeURIComponent(`I found this interesting note: ${shareUrl()}`);
+    window.open(`mailto:?subject=${subject}&body=${body}`);
+    showShareOptions.value = false;
+};
+
+const shareViaTwitter = () => {
+    const text = encodeURIComponent(`Check out this note: "${note.value.title}"`);
+    const url = encodeURIComponent(shareUrl());
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+    showShareOptions.value = false;
+};
+
+const shareViaLinkedIn = () => {
+    const url = encodeURIComponent(shareUrl());
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+    showShareOptions.value = false;
+};
 </script>

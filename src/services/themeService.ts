@@ -3,9 +3,12 @@ type ThemeListener = (isDark: boolean) => void;
 
 const THEME_STORAGE_KEY = 'theme';
 const themeListeners = new Set<ThemeListener>();
+const THEME_TRANSITION_CLASS = 'theme-transition';
+const THEME_TRANSITION_DURATION = 420;
 
 let mediaQuery: MediaQueryList | null = null;
 let isSystemListenerAttached = false;
+let themeTransitionTimeout: ReturnType<typeof setTimeout> | undefined;
 
 const getMediaQuery = (): MediaQueryList | null => {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
@@ -31,14 +34,31 @@ const notifyThemeListeners = (): void => {
     themeListeners.forEach((listener) => listener(isDark));
 };
 
-const applyTheme = (theme: Theme): void => {
+const enableThemeTransition = (): void => {
+    document.documentElement.classList.add(THEME_TRANSITION_CLASS);
+
+    if (themeTransitionTimeout) {
+        clearTimeout(themeTransitionTimeout);
+    }
+
+    themeTransitionTimeout = setTimeout(() => {
+        document.documentElement.classList.remove(THEME_TRANSITION_CLASS);
+        themeTransitionTimeout = undefined;
+    }, THEME_TRANSITION_DURATION);
+};
+
+const applyTheme = (theme: Theme, shouldTransition = false): void => {
+    if (shouldTransition) {
+        enableThemeTransition();
+    }
+
     document.documentElement.classList.toggle('dark', theme === 'dark');
     notifyThemeListeners();
 };
 
 const handleSystemPreferenceChange = (): void => {
     if (!getSavedTheme()) {
-        applyTheme(getSystemTheme());
+        applyTheme(getSystemTheme(), true);
     }
 };
 
@@ -71,7 +91,7 @@ export function toggleTheme(): void {
     const newTheme: Theme = isDarkMode() ? 'light' : 'dark';
 
     localStorage.setItem(THEME_STORAGE_KEY, newTheme);
-    applyTheme(newTheme);
+    applyTheme(newTheme, true);
 }
 
 export function isDarkMode(): boolean {

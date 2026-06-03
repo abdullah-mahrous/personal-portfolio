@@ -227,22 +227,22 @@
 
         <home-sections class="mt-16 sm:mt-20" title="Featured Projects" :has-link="true" route-name="projects"
             link-text="Projects">
-            <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div v-if="featuredProjects" class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <project-card v-for="project in featuredProjects" :key="project.id" class="h-full"
-                    :img-src="project.imgSrc" :project-name="project.projectName"
-                    :project-summary="project.projectSummary" :tags="project.tags"
-                    :project-link="project.projectLink" />
+                    :img-src="project.imgSrc" :project-name="project.name" :project-summary="project.description"
+                    :tags="project.technologies" :project-link="project.link" />
             </div>
         </home-sections>
 
         <home-sections class="mt-16 sm:mt-20" title="Latest Dev Notes" :has-link="true" route-name="journal"
             link-text="Dev Notes">
-            <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+            <div v-if="featuredNotes.length > 0"
+                class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
 
                 <router-link v-for="note in featuredNotes" :key="note.id"
                     :to="{ name: 'note', params: { id: note.id } }" class="no-underline cursor-pointer">
-                    <note-card class="h-full w-full" :img-src="note.imgSrc" :title="note.title" :content="note.content"
-                        :creation-date="note.creationDate" :reading-time="note.readingTime" />
+                    <note-card class="h-full w-full" :img-src="note.imgURL" :title="note.title" :content="note.content"
+                        :creation-date="note.creationDate" :read-time="note.readTime" />
                 </router-link>
 
             </div>
@@ -254,7 +254,12 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, onMounted } from 'vue';
 import { Download, FolderGit2, MoveRight, ShieldCheck, User2, Lightbulb, Zap, Box } from '@lucide/vue';
+import { useProjectsStore } from '@/stores/projects';
+import { useNotesStore } from '../stores/notes';
+import { type Project } from '@/services/projectsService';
+import { type Note } from '@/services/notesService';
 import BaseBtn from '../components/BaseBtn.vue';
 import GithubLink from '../components/GithubLink.vue';
 import LinkedinLink from '../components/LinkedinLink.vue';
@@ -267,74 +272,22 @@ import ProjectCard from '../components/ProjectCard.vue';
 import ContactForm from '../components/ContactForm.vue';
 import NoteCard from '../components/NoteCard.vue';
 
-type FeaturedProject = {
-    id: number;
-    imgSrc: string;
-    projectName: string;
-    projectSummary: string;
-    tags: string[];
-    projectLink: string;
-};
+const notesStore = useNotesStore();
+const projectsStore = useProjectsStore();
 
-type FeaturedNote = {
-    id: number;
-    imgSrc: string;
-    title: string;
-    content: string;
-    creationDate: string;
-    readingTime: number;
-};
+let featuredProjects = ref<Project[]>([]);
+let featuredNotes = ref<Note[]>([]);
 
-const featuredProjects: FeaturedProject[] = [
-    {
-        id: 1,
-        imgSrc: '/src/assets/doql-image.png',
-        projectName: 'DoQL',
-        projectSummary:
-            'An open-source desktop app to design ERDs, export SQL for SQLite/MySQL/SQL Server, and securely share password-protected project files.',
-        tags: ['Windows Forms', 'C#', 'SQLite', 'MySQL', 'SQL Server'],
-        projectLink: 'https://github.com/abdullah-mahrous/DoQL',
-    },
-    {
-        id: 2,
-        imgSrc: '/src/assets/queue2.png',
-        projectName: 'Clinic Manager',
-        projectSummary:
-            'A real-time SPA that centralizes clinic workflows for managing patients, sessions, doctors, and staff with responsive interfaces.',
-        tags: ['Vue.js', 'Socket.IO', 'Vite'],
-        projectLink: 'https://github.com/abdullah-mahrous/Clinic-Manager-Frontend',
-    },
-    {
-        id: 3,
-        imgSrc: '/src/assets/teamsmaker-img.png',
-        projectName: 'Teams Maker',
-        projectSummary:
-            'A collaboration platform that helps students create balanced graduation-project teams and coordinate assignments in one place.',
-        tags: ['Vue3', 'Vuetify', 'Vite'],
-        projectLink: 'https://github.com/abdullah-mahrous/TeamsMaker-Front-End',
-    },
-];
+onMounted(async () => {
+    // Fetch notes when component mounts
+    if (notesStore.notes.length === 0)
+        await notesStore.fetchNotes();
 
-const featuredNotes: FeaturedNote[] = [
-    {
-        id: 1,
-        imgSrc: '/src/assets/original-portfolio.png',
-        title: 'DoQL',
-        content:
-            'This note covers the architectural decisions, tech stack, and development process behind DoQL, highlighting key features and challenges overcome during its creation. Whether you\'re interested in desktop app development, database design, or just want to see how DoQL was built, this note provides an in-depth look at the project from start to finish.',
-        creationDate: 'Aug 15, 2024',
-        readingTime: 5
-    },
-    {
-        id: 1,
-        imgSrc: '/src/assets/abdo-photo.jpeg',
-        title: 'DoQL',
-        content:
-            'An open-source desktop app to design ERDs, export SQL for SQLite/MySQL/SQL Server',
-        creationDate: 'Aug 15, 2024',
-        readingTime: 5
-    }
-];
+    featuredNotes.value = notesStore.fetchFeaturedNotes();
+
+    projectsStore.fetchProjects();
+    featuredProjects.value = projectsStore.fetchFeaturedProjects();
+});
 
 const downloadCV = () => {
     const link = document.createElement('a');
@@ -344,7 +297,6 @@ const downloadCV = () => {
     link.click();
     document.body.removeChild(link);
 };
-
 </script>
 
 <style>

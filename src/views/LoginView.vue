@@ -10,7 +10,7 @@
                 <div class="relative z-10">
                     <div class="mb-6 flex items-center gap-4 justify-center">
                         <span
-                            class="flex size-12 shrink-0 items-center justify-center rounded-xl border border-gray-200 dark:border-[#2A2742] bg-gradient-to-br from-slate-50 to-slate-100 dark:bg-[linear-gradient(145deg,#171427,#0E0D17)] shadow-[inset_0_0_18px_rgba(131,21,231,0.20),0_0_18px_rgba(131,21,231,0.10)]">
+                            class="flex size-12 shrink-0 items-center justify-center rounded-xl border border-gray-200 dark:border-[#2A2742] bg-linear-to-br from-slate-50 to-slate-100 dark:bg-[linear-gradient(145deg,#171427,#0E0D17)] shadow-[inset_0_0_18px_rgba(131,21,231,0.20),0_0_18px_rgba(131,21,231,0.10)]">
                             <lock-keyhole class="text-primary" :size="24" />
                         </span>
                         <div class="min-w-0">
@@ -60,8 +60,7 @@ import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { LockKeyhole, LogIn } from '@lucide/vue'
 import { useAuthStore } from '../stores/auth'
-
-const PK = 'blastek'
+import { apiCall } from '../services/apiConfig'
 
 const route = useRoute()
 const router = useRouter()
@@ -71,6 +70,7 @@ const email = ref('')
 const password = ref('')
 const wrongAttemptCount = ref(0)
 const isGateUnlocked = ref(false)
+const PK = 'blastek'
 const isSubmitting = ref(false)
 const message = ref('')
 const messageType = ref<'success' | 'error'>('error')
@@ -123,22 +123,15 @@ const verifyWithApi = async () => {
     if (!email.value.trim() || !password.value) {
         messageType.value = 'error'
         message.value = 'Email and password are required.'
+
         return
     }
-
-    const verifyUrl = import.meta.env.VITE_AUTH_VERIFY_URL
-
-    // if (!verifyUrl) {
-    //     messageType.value = 'error'
-    //     message.value = 'Login endpoint is not configured.'
-    //     return
-    // }
 
     isSubmitting.value = true
     message.value = ''
 
     try {
-        const response = await fetch(verifyUrl, {
+        const response = await apiCall('/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -149,25 +142,21 @@ const verifyWithApi = async () => {
             }),
         })
 
-        try {
-            await response.json()
-        } catch {
+        if (response.status == 401) {
+            messageType.value = 'error'
+            message.value = 'Email or password is incorrect.'
+            return
+        }
+        else if (!response.ok) {
+            messageType.value = 'error'
+            message.value = 'Login request was rejected.'
+            return
         }
 
-        // if (!response.ok) {
-        //     messageType.value = 'error'
-        //     message.value = 'Login request was rejected.'
-        //     return
-        // }
+        const data = await response.json()
 
-        // if (!isAuthorizedResponse(data)) {
-        //     messageType.value = 'error'
-        //     message.value = 'Credentials were not approved.'
-        //     return
-        // }
-
-        authStore.setAuthorized(true);
-        await router.push(redirectTarget.value);
+        authStore.setToken(data.data.token)
+        await router.push(redirectTarget.value)
 
     } catch {
         messageType.value = 'error'

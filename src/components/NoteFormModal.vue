@@ -1,12 +1,14 @@
 <template>
-    <div v-if="isOpen" class="modal-overlay" @click.self="closeModal">
+    <div v-if="props.isOpen" class="modal-overlay" @click.self="closeModal">
         <div class="modal-card max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold">
-                    {{ mode === 'create' ? 'Create New Note' : 'Edit Note' }}
+                    {{ props.mode === 'create' ? 'Create New Note' : 'Edit Note' }}
                 </h2>
-                <button @click="closeModal"
-                    class="cursor-pointer text-xl hover:text-primary transition-colors">✕</button>
+                <button @click="closeModal" :disabled="props.isSaving"
+                    class="cursor-pointer text-xl hover:text-primary transition-colors disabled:cursor-not-allowed disabled:opacity-60">
+                    x
+                </button>
             </div>
 
             <form @submit.prevent="handleSubmit" class="space-y-4">
@@ -27,38 +29,42 @@
 
                 <!-- Image File Upload -->
                 <div>
-                    <label class="block text-sm font-medium mb-2">Image *</label>
-                    <input type="file" accept="image/*" @change="handleImageUpload"
-                        class="base-input base-border w-full cursor-pointer" />
-                    <p class="text-slate-600 dark:text-offWhite text-xs mt-1">Select an image file (PNG, JPG, GIF, etc.)
+                    <label class="block text-sm font-medium mb-2">{{ imageLabel }}</label>
+                    <input ref="imageInput" type="file" accept="image/*" :disabled="props.isSaving"
+                        @change="handleImageUpload" class="base-input base-border w-full cursor-pointer" />
+                    <p class="text-slate-600 dark:text-offWhite text-xs mt-1">
+                        Select an image file (PNG, JPG, GIF, etc.)
                     </p>
-                    <p v-if="errors.imgSrc" class="text-red-500 text-sm mt-1">{{ errors.imgSrc }}</p>
+                    <p v-if="errors.img" class="text-red-500 text-sm mt-1">{{ errors.img }}</p>
                     <div v-if="imagePreview" class="mt-3 flex items-center gap-3">
                         <img :src="imagePreview" alt="Preview" class="h-16 w-16 object-cover rounded">
-                        <span class="text-sm text-slate-600 dark:text-offWhite">Image selected</span>
+                        <span class="text-sm text-slate-600 dark:text-offWhite">
+                            {{ selectedImage ? 'New image selected' : 'Current image' }}
+                        </span>
                     </div>
                 </div>
 
                 <!-- Reading Time -->
                 <div>
                     <label class="block text-sm font-medium mb-2">Reading Time (minutes) *</label>
-                    <base-input v-model.number="formData.readingTime" type="number" placeHolder="e.g., 5" />
-                    <p v-if="errors.readingTime" class="text-red-500 text-sm mt-1">{{ errors.readingTime }}</p>
+                    <base-input v-model.number="formData.readTime" type="number" placeHolder="e.g., 5" />
+                    <p v-if="errors.readTime" class="text-red-500 text-sm mt-1">{{ errors.readTime }}</p>
                 </div>
 
                 <!-- Error Message -->
-                <div v-if="submitError" class="bg-red-500/10 border border-red-500 rounded-md p-3 text-red-500 text-sm">
-                    {{ submitError }}
+                <div v-if="displayError"
+                    class="bg-red-500/10 border border-red-500 rounded-md p-3 text-red-500 text-sm">
+                    {{ displayError }}
                 </div>
 
                 <!-- Buttons -->
                 <div class="flex gap-3 pt-4">
-                    <base-btn @click="closeModal"
+                    <base-btn @click="closeModal" :disabled="props.isSaving"
                         class="flex-1 p-2 !bg-transparent !border-primary !text-primary hover:!bg-primary/10">
                         Cancel
                     </base-btn>
-                    <base-btn type="submit" class="flex-1 p-2">
-                        {{ mode === 'create' ? 'Create' : 'Update' }}
+                    <base-btn type="submit" :disabled="props.isSaving" class="flex-1 p-2">
+                        {{ submitLabel }}
                     </base-btn>
                 </div>
             </form>
@@ -67,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, onUnmounted, ref, watch } from 'vue';
 import BaseInput from './BaseInput.vue';
 import BaseBtn from './BaseBtn.vue';
 import type { Note } from '../services/notesService';
@@ -76,15 +82,19 @@ interface Props {
     isOpen: boolean;
     note?: Note | null;
     mode: 'create' | 'edit';
+    isSaving?: boolean;
+    error?: string | null;
 }
 
 interface Emits {
     (e: 'close'): void;
-    (e: 'save', data: Omit<Note, 'id'>): void;
+    (e: 'save', data: any): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     note: null,
+    isSaving: false,
+    error: null,
 });
 
 const emit = defineEmits<Emits>();
@@ -92,93 +102,124 @@ const emit = defineEmits<Emits>();
 const formData = ref({
     title: '',
     content: '',
-    imgSrc: '',
-    readingTime: 5,
+    readTime: 1,
 });
-
-const imagePreview = ref('');
 
 const errors = ref({
     title: '',
     content: '',
-    imgSrc: '',
-    readingTime: '',
+    img: '',
+    readTime: '',
 });
 
+const selectedImage = ref<File | null>(null);
+const imagePreview = ref('');
+const imageInput = ref<HTMLInputElement | null>(null);
+const previewObjectUrl = ref('');
 const submitError = ref('');
 
-// Watch for modal open/close to handle form population
+const displayError = computed(() => submitError.value || props.error || '');
+const imageLabel = computed(() => props.mode === 'create' ? 'Image *' : 'Image');
+const submitLabel = computed(() => {
+    if (props.isSaving)
+        return props.mode === 'create' ? 'Creating...' : 'Updating...';
+
+    return props.mode === 'create' ? 'Create' : 'Update';
+});
+
 watch(
-    () => props.isOpen,
-    (isOpen) => {
-        if (isOpen) {
-            if (props.mode === 'create') {
-                resetForm();
-            } else if (props.mode === 'edit' && props.note) {
-                // Populate form with existing note data
-                formData.value = {
-                    title: props.note.title,
-                    content: props.note.content,
-                    imgSrc: props.note.imgSrc,
-                    readingTime: props.note.readingTime,
-                };
-                imagePreview.value = props.note.imgSrc;
-                errors.value = {
-                    title: '',
-                    content: '',
-                    imgSrc: '',
-                    readingTime: '',
-                };
-                submitError.value = '';
-            }
+    () => [props.isOpen, props.mode, props.note] as const,
+    ([isOpen]) => {
+        if (!isOpen)
+            return;
+
+        if (props.mode === 'create') {
+            resetForm();
+            return;
         }
+
+        if (props.note)
+            populateForm(props.note);
     },
     { immediate: true }
 );
+
+onUnmounted(() => {
+    clearPreviewObjectUrl();
+});
+
+function populateForm(note: Note) {
+    formData.value = {
+        title: note.title,
+        content: note.content,
+        readTime: note.readTime,
+    };
+
+    selectedImage.value = null;
+    setImagePreview(note.imgURL);
+    resetFileInput();
+    clearErrors();
+}
 
 function resetForm() {
     formData.value = {
         title: '',
         content: '',
-        imgSrc: '',
-        readingTime: 5,
+        readTime: 1,
     };
-    imagePreview.value = '';
+
+    selectedImage.value = null;
+    setImagePreview('');
+    resetFileInput();
+    clearErrors();
+}
+
+function clearErrors() {
     errors.value = {
         title: '',
         content: '',
-        imgSrc: '',
-        readingTime: '',
+        img: '',
+        readTime: '',
     };
     submitError.value = '';
+}
+
+function resetFileInput() {
+    if (imageInput.value) {
+        imageInput.value.value = '';
+    }
+}
+
+function clearPreviewObjectUrl() {
+    if (previewObjectUrl.value) {
+        URL.revokeObjectURL(previewObjectUrl.value);
+        previewObjectUrl.value = '';
+    }
+}
+
+function setImagePreview(url: string) {
+    clearPreviewObjectUrl();
+    imagePreview.value = url;
 }
 
 function handleImageUpload(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
 
-    if (!file) return;
+    if (!file) {
+        return;
+    }
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const base64 = e.target?.result as string;
-        formData.value.imgSrc = base64;
-        imagePreview.value = base64;
-        errors.value.imgSrc = '';
-    };
-    reader.onerror = () => {
-        errors.value.imgSrc = 'Failed to read image file';
-    };
-    reader.readAsDataURL(file);
+    selectedImage.value = file;
+    clearPreviewObjectUrl();
+    previewObjectUrl.value = URL.createObjectURL(file);
+    imagePreview.value = previewObjectUrl.value;
+    errors.value.img = '';
+    submitError.value = '';
 }
 
 function validateForm() {
-    errors.value = {
-        title: '',
-        content: '',
-        imgSrc: '',
-        readingTime: '',
-    };
+    clearErrors();
 
     if (!formData.value.title || formData.value.title.trim() === '') {
         errors.value.title = 'Title is required';
@@ -188,12 +229,12 @@ function validateForm() {
         errors.value.content = 'Content is required';
     }
 
-    if (!formData.value.imgSrc) {
-        errors.value.imgSrc = 'Image is required';
+    if (props.mode === 'create' && !selectedImage.value) {
+        errors.value.img = 'Image is required';
     }
 
-    if (!formData.value.readingTime || formData.value.readingTime < 1) {
-        errors.value.readingTime = 'Reading time must be at least 1 minute';
+    if (!formData.value.readTime || formData.value.readTime < 1) {
+        errors.value.readTime = 'Reading time must be at least 1 minute';
     }
 
     return !Object.values(errors.value).some(err => err);
@@ -204,26 +245,61 @@ function handleSubmit() {
         return;
     }
 
-    try {
-        const creationDate = props.mode === 'create'
-            ? new Date().toISOString().split('T')[0]
-            : (props.note?.creationDate || new Date().toISOString().split('T')[0]);
+    const title = formData.value.title.trim();
+    const content = formData.value.content;
+    const readTime = formData.value.readTime;
+
+    if (props.mode === 'create') {
+        if (!selectedImage.value) {
+            errors.value.img = 'Image is required';
+            return;
+        }
 
         emit('save', {
-            title: formData.value.title,
-            content: formData.value.content,
-            imgSrc: formData.value.imgSrc,
-            creationDate: creationDate,
-            readingTime: formData.value.readingTime,
-            comments: props.note?.comments ?? [],
+            title,
+            content,
+            readTime,
+            img: selectedImage.value,
         });
-        closeModal();
-    } catch (err) {
-        submitError.value = err instanceof Error ? err.message : 'Failed to save note';
+        return;
     }
+
+    if (!props.note) {
+        submitError.value = 'No note selected for editing';
+        return;
+    }
+
+    const updates: any = {};
+
+    if (title !== props.note.title) {
+        updates.title = title;
+    }
+
+    if (content !== props.note.content) {
+        updates.content = content;
+    }
+
+    if (readTime !== props.note.readTime) {
+        updates.readTime = readTime;
+    }
+
+    if (selectedImage.value) {
+        updates.img = selectedImage.value;
+    }
+
+    if (Object.keys(updates).length === 0) {
+        submitError.value = 'No changes to save';
+        return;
+    }
+
+    emit('save', updates);
 }
 
 function closeModal() {
+    if (props.isSaving) {
+        return;
+    }
+
     emit('close');
 }
 </script>

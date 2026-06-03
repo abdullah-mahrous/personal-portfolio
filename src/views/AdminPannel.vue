@@ -1,23 +1,29 @@
 <template>
     <main class="my-6 sm:my-8 px-4 sm:px-6 md:px-8 lg:px-16 overflow-x-hidden">
         <!-- Header -->
-        <div class="flex justify-between items-center mb-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-8">
             <h1 class="text-4xl sm:text-5xl font-bold">
                 Manage <span class="text-primary">Notes</span>
             </h1>
-            <base-btn @click="openCreateModal" class="p-2 text-sm font-medium">
-                Create Note
-            </base-btn>
-        </div>
-
-        <!-- Loading State -->
-        <div v-if="notesStore.loading" class="text-center py-12">
-            <p class="text-slate-600 dark:text-offWhite">Loading notes...</p>
+            <div class="flex flex-wrap gap-3">
+                <base-btn @click="openCreateModal" :disabled="isSaving || isDeleting" class="p-2 text-sm font-medium">
+                    Create Note
+                </base-btn>
+                <button @click="handleLogout"
+                    class="cursor-pointer border-2 border-red-500 bg-transparent px-4 py-2 text-[14px] font-medium rounded-md text-red-500 hover:bg-red-500/10 transition-colors duration-300">
+                    Logout
+                </button>
+            </div>
         </div>
 
         <!-- Error State -->
-        <div v-else-if="notesStore.error" class="bg-red-500/10 border border-red-500 rounded-lg p-4 mb-6">
+        <div v-if="notesStore.error" class="bg-red-500/10 border border-red-500 rounded-lg p-4 mb-6">
             <p class="text-red-500">{{ notesStore.error }}</p>
+        </div>
+        
+        <!-- Loading State -->
+        <div v-if="notesStore.loading" class="text-center py-12">
+            <p class="text-slate-600 dark:text-offWhite">Loading notes...</p>
         </div>
 
         <!-- Empty State -->
@@ -51,7 +57,7 @@
                             {{ formatDate(note.creationDate) }}
                         </td>
                         <td class="py-4 px-4 text-slate-500 dark:text-offWhite hidden sm:table-cell">
-                            {{ note.readingTime }} min
+                            {{ note.readTime }} min
                         </td>
                         <td class="py-4 px-4 text-right">
                             <div class="flex justify-end gap-2">
@@ -72,22 +78,27 @@
     </main>
 
     <!-- Modals -->
-    <note-form-modal :isOpen="activeModal === 'form'" :note="selectedNote" :mode="formMode" @close="closeModal"
-        @save="handleSaveNote" />
+    <note-form-modal :isOpen="activeModal === 'form'" :note="selectedNote" :mode="formMode" :isSaving="isSaving"
+        :error="activeModal === 'form' ? notesStore.error : null" @close="closeModal" @save="handleSaveNote" />
 
     <note-delete-confirm-modal :isOpen="activeModal === 'delete'" :noteName="selectedNote?.title || ''"
-        @confirm="handleDeleteNote" @cancel="closeModal" />
+        :loading="isDeleting" @confirm="handleDeleteNote" @cancel="closeModal" />
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useNotesStore } from '../stores/notes';
+import { useAuthStore } from '../stores/auth';
 import BaseBtn from '../components/BaseBtn.vue';
 import NoteFormModal from '../components/NoteFormModal.vue';
 import NoteDeleteConfirmModal from '../components/NoteDeleteConfirmModal.vue';
 import type { Note } from '../services/notesService';
+import { formatDate } from '../composables/dateFormater';
 
+const router = useRouter();
 const notesStore = useNotesStore();
+const authStore = useAuthStore();
 
 type ModalType = null | 'form' | 'delete';
 type FormMode = 'create' | 'edit';
@@ -95,64 +106,91 @@ type FormMode = 'create' | 'edit';
 const activeModal = ref<ModalType>(null);
 const formMode = ref<FormMode>('create');
 const selectedNote = ref<Note | null>(null);
+const isSaving = ref(false);
+const isDeleting = ref(false);
 
 onMounted(() => {
     // Fetch notes when component mounts
     notesStore.fetchNotes();
 });
 
-function formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-    });
-}
-
 function openCreateModal() {
+    notesStore.clearError();
     formMode.value = 'create';
     selectedNote.value = null;
     activeModal.value = 'form';
 }
 
 function openEditModal(note: Note) {
+    notesStore.clearError();
     formMode.value = 'edit';
     selectedNote.value = note;
     activeModal.value = 'form';
 }
 
 function openDeleteModal(note: Note) {
+    notesStore.clearError();
     selectedNote.value = note;
     activeModal.value = 'delete';
 }
 
-function closeModal() {
+function closeModal(force = false) {
+    if (!force && (isSaving.value || isDeleting.value)) {
+        return;
+    }
+
     activeModal.value = null;
     selectedNote.value = null;
 }
 
-function handleSaveNote(noteData: Omit<Note, 'id'>) {
+function getAuthToken() {
+    if (authStore.token) {
+        return authStore.token;
+    }
+
+    authStore.logout();
+    router.push({ name: 'login' });
+    throw new Error('Authorization token is missing');
+}
+
+async function handleSaveNote(noteData: any) {
+    isSaving.value = true;
+
     try {
-        if (formMode.value === 'create') {
-            notesStore.addNote(noteData);
-        } else if (selectedNote.value) {
-            notesStore.editNote(selectedNote.value.id, noteData);
-        }
-        closeModal();
+        const token = getAuthToken();
+
+        if (formMode.value === 'create')
+            await notesStore.addNote(noteData, token);
+        else if (selectedNote.value)
+            await notesStore.editNote(selectedNote.value.id, noteData, token);
+
+        closeModal(true);
     } catch (err) {
         console.error('Failed to save note:', err);
+    } finally {
+        isSaving.value = false;
     }
 }
 
-function handleDeleteNote() {
-    if (selectedNote.value) {
-        try {
-            notesStore.removeNote(selectedNote.value.id);
-            closeModal();
-        } catch (err) {
-            console.error('Failed to delete note:', err);
-        }
+async function handleDeleteNote() {
+    if (!selectedNote.value) {
+        return;
     }
+
+    isDeleting.value = true;
+
+    try {
+        await notesStore.removeNote(selectedNote.value.id, getAuthToken());
+        closeModal(true);
+    } catch (err) {
+        console.error('Failed to delete note:', err);
+    } finally {
+        isDeleting.value = false;
+    }
+}
+
+function handleLogout() {
+    authStore.logout();
+    router.push({ name: 'login' });
 }
 </script>

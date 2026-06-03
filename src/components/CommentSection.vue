@@ -7,6 +7,16 @@
 
         <!-- Comment Form -->
         <form @submit.prevent="handleSubmitComment" class="mb-8 rounded-lg space-y-4">
+            <!-- Error/Success Message -->
+            <div v-if="message" :class="[
+                'p-4 rounded-lg text-sm',
+                message.type === 'error'
+                    ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 border border-red-300 dark:border-red-700'
+                    : 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 border border-green-300 dark:border-green-700'
+            ]">
+                {{ message.text }}
+            </div>
+
             <!-- Name Field -->
             <div>
                 <label class="block text-slate-700 dark:text-offWhite font-medium mb-2">Name</label>
@@ -16,14 +26,14 @@
             <!-- Comment Field -->
             <div>
                 <label class="block text-slate-700 dark:text-offWhite font-medium mb-2">Comment</label>
-                <textarea v-model="formData.comment" placeholder="Write your comment..."
+                <textarea v-model="formData.content" placeholder="Write your comment..."
                     class="base-input base-border w-full p-4 h-32 bg-white dark:bg-[#111217] rounded-lg text-lightText dark:text-white placeholder:text-slate-400 dark:placeholder:text-muted outline-none focus:border-primary resize-vertical"></textarea>
             </div>
 
             <!-- Submit Button -->
             <div>
-                <base-btn class="w-full sm:w-auto px-4 py-2">
-                    Post Comment
+                <base-btn type="submit" class="w-full sm:w-auto px-4 py-2" :disabled="isSubmitting">
+                    {{ isSubmitting ? 'Posting...' : 'Post Comment' }}
                     <Send class="size-4 ml-3" />
                 </base-btn>
             </div>
@@ -32,7 +42,8 @@
         <!-- Comments List -->
         <div v-if="comments.length > 0">
             <h3 class="text-xl font-semibold mb-6">Comments ({{ comments.length }})</h3>
-            <div v-for="comment in comments" :key="comment.id" class="border-t border-gray-200 dark:border-[#1F2028]">
+            <div v-for="comment in comments" :key="comment.commentId"
+                class="border-t border-gray-200 dark:border-[#1F2028]">
                 <comment :comment="comment" />
             </div>
         </div>
@@ -45,41 +56,79 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import BaseInput from './BaseInput.vue';
 import BaseBtn from './BaseBtn.vue';
 import Comment from './Comment.vue';
 import { Send } from '@lucide/vue';
-import type { NoteComment } from '../services/notesService';
+import { useCommentsStore } from '../stores/comments';
 
 const props = defineProps<{
-    comments: NoteComment[];
+    noteId: string;
 }>();
+
+const commentsStore = useCommentsStore();
+const isSubmitting = ref(false);
+const message = ref<{ type: 'error' | 'success'; text: string } | null>(null);
 
 const formData = ref({
     name: '',
-    comment: '',
+    content: '',
 });
 
+const comments = computed(() => commentsStore.comments);
 
-function handleSubmitComment() {
-    if (!formData.value.name.trim() || !formData.value.comment.trim()) {
+onMounted(() => {
+    commentsStore.fetchComments(props.noteId);
+});
+
+const clearMessage = () => {
+    message.value = null;
+};
+
+const setMessageWithAutoClear = (type: 'error' | 'success', text: string) => {
+    message.value = { type, text };
+    setTimeout(() => {
+        clearMessage();
+    }, 5000);
+};
+
+async function handleSubmitComment() {
+    // Clear previous messages
+    clearMessage();
+
+    // Validation
+    if (!formData.value.name.trim()) {
+        setMessageWithAutoClear('error', 'Please enter your name.');
         return;
     }
 
-    const newComment: NoteComment = {
-        id: 1,
-        name: formData.value.name,
-        comment: formData.value.comment,
-        date: new Date().toDateString()
-    };
+    if (!formData.value.content.trim()) {
+        setMessageWithAutoClear('error', 'Please write a comment before posting.');
+        return;
+    }
 
-    props.comments.unshift(newComment);
+    isSubmitting.value = true;
 
-    // Reset form
-    formData.value = {
-        name: '',
-        comment: '',
-    };
+    try {
+        await commentsStore.addComment(props.noteId, {
+            name: formData.value.name,
+            content: formData.value.content,
+        });
+
+        // Show success message
+        setMessageWithAutoClear('success', 'Comment posted successfully! Thank you for your thoughts.');
+
+        // Reset form
+        formData.value = {
+            name: '',
+            content: '',
+        };
+    } catch (error) {
+        console.error('Failed to post comment:', error);
+        setMessageWithAutoClear('error', 'Failed to post comment. Please try again later.');
+    } finally {
+        isSubmitting.value = false;
+    }
 }
 </script>

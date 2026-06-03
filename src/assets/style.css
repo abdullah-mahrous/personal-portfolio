@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -25,6 +26,22 @@ body {
 html.dark body {
     background-color: var(--color-darkBg);
     color: var(--color-darkText);
+}
+
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity, left;
+    transition-duration: 420ms;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.theme-transition img,
+html.theme-transition video,
+html.theme-transition canvas,
+html.theme-transition iframe {
+    transition-property: opacity, filter;
 }
 
 .base-border {
@@ -221,6 +238,10 @@ html:not(.dark) .mobile-nav-link {
 
 @media (prefers-reduced-motion: reduce) {
 
+    html.theme-transition,
+    html.theme-transition *,
+    html.theme-transition *::before,
+    html.theme-transition *::after,
     .desktop-nav-link,
     .desktop-nav-link::after,
     .mobile-nav-link,

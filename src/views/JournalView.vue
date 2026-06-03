@@ -9,9 +9,10 @@
 
         <!-- project-cards -->
         <div class="mt-8 grid grid-cols-1 gap-4 sm:gap-6">
-            <router-link :to="{ name: 'note', params: { id: note.id } }" v-for="note in notesStore.notes" :key="note.id">
-                <note-card class="h-full w-full" :img-src="note.imgSrc" :title="note.title"
-                     :content="note.content" :creation-date="note.creationDate" :reading-time="note.readingTime" />
+            <router-link :to="{ name: 'note', params: { id: note.id } }" v-for="note in notesStore.notes"
+                :key="note.id">
+                <note-card class="h-full w-full" :img-src="note.imgURL" :title="note.title" :content="note.content"
+                    :creation-date="formatDate(note.creationDate)" :read-time="note.readTime" />
             </router-link>
         </div>
 
@@ -19,14 +20,17 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
 import NoteCard from '../components/NoteCard.vue';
 import { useNotesStore } from '../stores/notes';
+import { formatDate } from '../composables/dateFormater';
 
 const notesStore = useNotesStore();
 
-onMounted(() => {
+const loadJournalNotes = async () => {
     // Fetch notes when component mounts
-    notesStore.fetchNotes();
-});
+    if (notesStore.notes.length === 0)
+        await notesStore.fetchNotes();
+};
+
+loadJournalNotes();
 </script>

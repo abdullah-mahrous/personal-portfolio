@@ -21,9 +21,8 @@
             class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <div v-for="(project, index) in filteredProjects" :key="project.id" class="origin-[center_top] h-full"
                 :style="getDelayStyle(index)">
-                <project-card class="h-full" :img-src="project.imgSrc" :project-name="project.projectName"
-                    :project-summary="project.projectSummary" :tags="project.tags"
-                    :project-link="project.projectLink" />
+                <project-card class="h-full" :img-src="project.imgSrc" :project-name="project.name"
+                    :project-summary="project.description" :tags="project.technologies" :project-link="project.link" />
             </div>
         </TransitionGroup>
 
@@ -68,91 +67,26 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { MoveRight } from '@lucide/vue';
 import { scrollToContact, handleHomeScroll } from '../services/scrollService';
+import { useProjectsStore } from '@/stores/projects';
+import type { Project } from '../services/projectsService.ts';
+import { MoveRight } from '@lucide/vue';
 import BaseBtn from '../components/BaseBtn.vue';
 import ProjectCard from '../components/ProjectCard.vue';
 
 type ProjectCategory = 'frontend' | 'backend';
 type ProjectFilter = 'all' | ProjectCategory;
 
-type ProjectItem = {
-    id: number;
-    imgSrc: string;
-    projectName: string;
-    projectSummary: string;
-    tags: string[];
-    projectLink: string;
-    category: ProjectCategory;
-};
+const projectsStore = useProjectsStore();
+
+projectsStore.fetchProjects();
+
+const projects: Project[] = computed(() => projectsStore.projects).value;
 
 const filterOptions: { label: string; value: ProjectFilter }[] = [
     { label: 'All', value: 'all' },
     { label: 'Front-End', value: 'frontend' },
     { label: 'Back-End', value: 'backend' },
-];
-
-const projects: ProjectItem[] = [
-    {
-        id: 1,
-        imgSrc: '/src/assets/doql-image.png',
-        projectName: 'DoQL',
-        projectSummary:
-            'An open-source desktop app to design ERDs, export SQL for SQLite/MySQL/SQL Server, and securely share password-protected project files.',
-        tags: ['Windows Forms', 'C#', 'SQLite', 'MySQL', 'SQL Server'],
-        projectLink: 'https://github.com/abdullah-mahrous/DoQL',
-        category: 'backend',
-    },
-    {
-        id: 2,
-        imgSrc: '/src/assets/queue2.png',
-        projectName: 'Clinic Manager',
-        projectSummary:
-            'A real-time SPA that centralizes clinic workflows for managing patients, sessions, doctors, and staff with responsive interfaces.',
-        tags: ['Vue.js', 'Socket.IO', 'Vite'],
-        projectLink: 'https://github.com/abdullah-mahrous/Clinic-Manager-Frontend',
-        category: 'frontend',
-    },
-    {
-        id: 3,
-        imgSrc: '/src/assets/teamsmaker-img.png',
-        projectName: 'Teams Maker',
-        projectSummary:
-            'A collaboration platform that helps students create balanced graduation-project teams and coordinate assignments in one place.',
-        tags: ['Vue3', 'Vuetify', 'Vite'],
-        projectLink: 'https://github.com/abdullah-mahrous/TeamsMaker-Front-End',
-        category: 'frontend',
-    },
-    {
-        id: 4,
-        imgSrc: '/src/assets/original-portfolio.png',
-        projectName: 'Portfolio Website',
-        projectSummary:
-            'A personal portfolio focused on clean UX, responsive layouts, and showcasing case studies with reusable component architecture.',
-        tags: ['Vue.js', 'TypeScript', 'Tailwind CSS'],
-        projectLink: 'https://github.com/abdullah-mahrous',
-        category: 'frontend',
-    },
-    {
-        id: 5,
-        imgSrc: '/src/assets/doql-image.png',
-        projectName: 'Auth & Roles API',
-        projectSummary:
-            'A role-based authentication API with JWT, account security flows, and scalable module structure for production-ready apps.',
-        tags: ['Node.js', 'Express.js', 'MongoDB'],
-        projectLink: 'https://github.com/abdullah-mahrous',
-        category: 'backend',
-    },
-    {
-        id: 6,
-        imgSrc: '/src/assets/queue2.png',
-        projectName: 'Realtime Notifications Service',
-        projectSummary:
-            'A backend service for pub/sub notifications and event delivery with resilient queue handling and modular transport adapters.',
-        tags: ['Node.js', 'Socket.IO', 'TypeScript'],
-        projectLink: 'https://github.com/abdullah-mahrous',
-        category: 'backend',
-    },
 ];
 
 const activeFilter = ref<ProjectFilter>('all');
