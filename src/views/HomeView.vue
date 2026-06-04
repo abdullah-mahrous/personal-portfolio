@@ -254,12 +254,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { Download, FolderGit2, MoveRight, ShieldCheck, User2, Lightbulb, Zap, Box } from '@lucide/vue';
-import { useProjectsStore } from '@/stores/projects';
+import { useProjectsStore } from '../stores/projects';
 import { useNotesStore } from '../stores/notes';
-import { type Project } from '@/services/projectsService';
-import { type Note } from '@/services/notesService';
+import { type Project } from '../services/projectsService';
+import { type Note } from '../services/notesService';
 import BaseBtn from '../components/BaseBtn.vue';
 import GithubLink from '../components/GithubLink.vue';
 import LinkedinLink from '../components/LinkedinLink.vue';

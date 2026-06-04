@@ -1,3 +1,10 @@
+import IEEEImg from '@/assets/ieee.png';
+import RecipeHubImg from '@/assets/recipehub.png';
+import DoQLImg from '@/assets/doql.png';
+import SalemClinicImg from '@/assets/salem-clinic.png';
+import ClinicManagerImg from '@/assets/clinic-manager.png';
+import TeamsMakerImg from '@/assets/teams-maker.png';
+
 export type Project = {
     id: number;
     imgSrc: string;
@@ -13,7 +20,7 @@ export type Project = {
 export const Projects: Project[] = [
     {
         id: 111435,
-        imgSrc: '/src/assets/ieee.png',
+        imgSrc: IEEEImg,
         name: 'IEEE Kafr El Sheikh Branch Website',
         description: 'A responsive and user-friendly website developed for the IEEE Kafr El Sheikh Branch to showcase activities, events, and organizational updates.',
         technologies: ['HTML5', 'CSS3', 'JavaScript', 'Bootstrap'],
@@ -23,7 +30,7 @@ export const Projects: Project[] = [
     },
     {
         id: 245345345,
-        imgSrc: '/src/assets/recipehub.png',
+        imgSrc: RecipeHubImg,
         name: 'RecipeHub',
         description: 'RecipeHub is a web application designed to help users discover, create, and interact with recipes in a social and engaging environment.',
         technologies: ['HTML5', 'CSS3', 'JavaScript', 'Bootstrap'],
@@ -33,7 +40,7 @@ export const Projects: Project[] = [
     },
     {
         id: 355464545645645,
-        imgSrc: '/src/assets/doql.png',
+        imgSrc: DoQLImg,
         name: 'DoQL',
         description: 'An open-source windows forms application that helps developers to easily design ERD with the ability to export it into SQL commands.',
         technologies: ['Windows Forms', 'C#', 'JSON', 'SQLite', 'MySQL'],
@@ -42,7 +49,7 @@ export const Projects: Project[] = [
     },
     {
         id: 4554645456456524,
-        imgSrc: '/src/assets/salem-clinic.png',
+        imgSrc: SalemClinicImg,
         name: 'Salem Center',
         description: 'A website developed for Salem Center, a clinic specializing in physical therapy and nutrition services, providing patients with easy access to clinic information, available services, educational content, and an integrated reservation system for booking appointments.',
         technologies: ['Google Maps API', 'HTML5', 'CSS3', 'JavaScript', 'Bootstrap'],
@@ -52,7 +59,7 @@ export const Projects: Project[] = [
     },
     {
         id: 555464545645633,
-        imgSrc: '/src/assets/clinic-manager.png',
+        imgSrc: ClinicManagerImg,
         name: 'Clinic Manager',
         description: 'A scalable SPA designed to streamline clinic operations and centralize the management of patients, sessions, doctors, and staff, used by Salem Center for physical therapy and nutrition services',
         technologies: ['Vue.js', 'Vue Router', 'Vite', 'Web Socket'],
@@ -62,7 +69,7 @@ export const Projects: Project[] = [
     },
     {
         id: 655464545645644,
-        imgSrc: '/src/assets/teams-maker.png',
+        imgSrc: TeamsMakerImg,
         name: 'Teams Maker',
         description: 'A platform designed to facilitate teams formation and collaboration for graduation projects, by enabing students to create and join teams, showcase their skills, and manage project workflows from idea submission to final delivery.',
         technologies: ['Vue.js', 'Vue Router', 'Vite', 'Vuetify'],

@@ -68,7 +68,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { scrollToContact, handleHomeScroll } from '../services/scrollService';
-import { useProjectsStore } from '@/stores/projects';
+import { useProjectsStore } from '../stores/projects';
 import type { Project } from '../services/projectsService.ts';
 import { MoveRight } from '@lucide/vue';
 import BaseBtn from '../components/BaseBtn.vue';
