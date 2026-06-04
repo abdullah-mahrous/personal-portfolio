@@ -242,7 +242,7 @@
                 <router-link v-for="note in featuredNotes" :key="note.id"
                     :to="{ name: 'note', params: { id: note.id } }" class="no-underline cursor-pointer">
                     <note-card class="h-full w-full" :img-src="note.imgURL" :title="note.title" :content="note.content"
-                        :creation-date="note.creationDate" :read-time="note.readTime" />
+                        :creation-date="formatDate(note.creationDate)" :read-time="note.readTime" />
                 </router-link>
 
             </div>
@@ -258,8 +258,7 @@ import { ref, onMounted } from 'vue';
 import { Download, FolderGit2, MoveRight, ShieldCheck, User2, Lightbulb, Zap, Box } from '@lucide/vue';
 import { useProjectsStore } from '../stores/projects';
 import { useNotesStore } from '../stores/notes';
-import { type Project } from '../services/projectsService';
-import { type Note } from '../services/notesService';
+import { formatDate } from '../composables/dateFormater';
 import BaseBtn from '../components/BaseBtn.vue';
 import GithubLink from '../components/GithubLink.vue';
 import LinkedinLink from '../components/LinkedinLink.vue';
@@ -275,8 +274,8 @@ import NoteCard from '../components/NoteCard.vue';
 const notesStore = useNotesStore();
 const projectsStore = useProjectsStore();
 
-let featuredProjects = ref<Project[]>([]);
-let featuredNotes = ref<Note[]>([]);
+let featuredProjects = ref<any>([]);
+let featuredNotes = ref<any>([]);
 
 onMounted(async () => {
     // Fetch notes when component mounts

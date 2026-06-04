@@ -69,7 +69,7 @@
 import { computed, ref } from 'vue';
 import { scrollToContact, handleHomeScroll } from '../services/scrollService';
 import { useProjectsStore } from '../stores/projects';
-import type { Project } from '../services/projectsService.ts';
+import type { Project } from '../services/projectsService';
 import { MoveRight } from '@lucide/vue';
 import BaseBtn from '../components/BaseBtn.vue';
 import ProjectCard from '../components/ProjectCard.vue';
