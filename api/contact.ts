@@ -9,7 +9,6 @@ type ContactRequestBody = {
 const DEFAULT_CONTACT_EMAIL = 'abdullah.mohammed.mahrous@gmail.com';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL;
 const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? DEFAULT_CONTACT_EMAIL;
 
 const jsonResponse = (body: Record<string, unknown>, status = 200): Response => {
@@ -74,7 +73,7 @@ export default {
             return jsonResponse({ message: payload.error }, 400);
         }
 
-        if (!RESEND_API_KEY || !RESEND_FROM_EMAIL) {
+        if (!RESEND_API_KEY) {
             return jsonResponse({ message: 'Email service is not configured yet.' }, 500);
         }
 
@@ -85,7 +84,7 @@ export default {
 
         try {
             const { error } = await resend.emails.send({
-                from: RESEND_FROM_EMAIL,
+                from: payload.email,
                 to: [CONTACT_TO_EMAIL],
                 replyTo: payload.email,
                 subject: `Portfolio contact from ${payload.name}`,

@@ -7,9 +7,8 @@
         <div class="order-2 mt-1 flex min-w-0 flex-col sm:order-1 sm:mt-2 sm:flex-1">
             <h5 class="order-1 text-xl sm:text-2xl lg:text-3xl font-bold my-4 wrap-break-word md:order-2">{{ title }}
             </h5>
-            <p
+            <p v-html="renderedContent"
                 class="order-2 text-slate-600 dark:text-offWhite text-sm/relaxed sm:text-base/relaxed relative line-clamp-7 lg:line-clamp-9 md:order-3 whitespace-pre-line">
-                {{ content }}
             </p>
 
             <div
@@ -23,13 +22,26 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import { formatDate } from '../composables/dateFormater';
+import { marked } from 'marked';
 
-defineProps<{
+const props = defineProps<{
     imgSrc: string,
     title: string,
     content: string,
     creationDate: string,
     readTime: number,
 }>()
+
+let renderedContent = ref('');
+
+marked.setOptions({
+    breaks: true,
+    gfm: true,
+});
+
+onMounted(async () => {
+    renderedContent.value = await marked.parse(props.content);
+});
 </script>
