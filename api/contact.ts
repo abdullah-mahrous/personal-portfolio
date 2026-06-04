@@ -85,7 +85,7 @@ export default {
         try {
             const { error } = await resend.emails.send({
                 from: 'onboarding@resend.dev',
-                to: 'abdullah.mohammed.mahrous@gmail.com',
+                to: CONTACT_TO_EMAIL,
                 replyTo: payload.email,
                 subject: `Portfolio contact from ${payload.name}`,
                 text: [
