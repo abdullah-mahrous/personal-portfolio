@@ -3,7 +3,7 @@
         <img :src="imgSrc" :alt="`${projectName} cover image`"
             class="rounded-lg mb-6 sm:mb-8 w-full object-cover h-48 sm:h-56 lg:h-70" loading="lazy">
 
-        <h5 class="text-lg sm:text-xl font-bold mb-4 wrap-break-word">{{ projectName }}</h5>
+        <p class="text-lg sm:text-xl font-bold mb-4 wrap-break-word">{{ projectName }}</p>
         <p class="card-text mb-4 relative min-h-18">
             {{ projectSummary }}
         </p>

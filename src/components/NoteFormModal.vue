@@ -5,7 +5,7 @@
                 <h2 class="text-2xl font-bold">
                     {{ props.mode === 'create' ? 'Create New Note' : 'Edit Note' }}
                 </h2>
-                <button @click="closeModal" :disabled="props.isSaving"
+                <button @click="closeModal" :disabled="props.isSaving" aria-label="Close Note Form"
                     class="cursor-pointer text-xl hover:text-primary transition-colors disabled:cursor-not-allowed disabled:opacity-60">
                     x
                 </button>

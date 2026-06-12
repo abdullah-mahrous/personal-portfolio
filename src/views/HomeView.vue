@@ -21,13 +21,14 @@
 
                     <div class="flex flex-col xs:flex-row gap-4 mb-10">
                         <router-link to="/projects" class="w-full sm:w-fit">
-                            <base-btn class="w-full sm:min-w-48 lg:min-w-0 lg:w-auto px-5 sm:px-6 py-3.5 sm:py-4">
+                            <base-btn class="w-full sm:min-w-48 lg:min-w-0 lg:w-auto px-5 sm:px-6 py-3.5 sm:py-4"
+                                aria-label="View My Work">
                                 View My Work
                                 <MoveRight class="ml-3" />
                             </base-btn>
                         </router-link>
 
-                        <button
+                        <button aria-label="Download CV"
                             class="w-full sm:w-fit sm:min-w-48 lg:min-w-0 lg:w-auto cursor-pointer border-2 border-gray-300 dark:border-[#2A2A35] bg-transparent text-lightText dark:text-white text-[14px] font-medium rounded-md dark:hover:bg-[rgba(255,255,255,0.03)] hover:border-gray-400 dark:hover:border-[#3A3B47] transition-colors duration-300 flex justify-center items-center px-5 sm:px-6 py-3.5 sm:py-4"
                             @click="downloadCV">
                             Download CV

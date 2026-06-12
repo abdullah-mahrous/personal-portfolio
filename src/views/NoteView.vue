@@ -38,7 +38,7 @@
                     {{ note.comments.length }}
                 </span>
 
-                <span @click="openShareOptions"
+                <span @click="openShareOptions" aria-label="Share Note"
                     class="inline-block ml-4 cursor-pointer hover:bg-muted/15 p-2 hover:rounded-full transition-all duration-300 ease-in-out"
                     role="button" tabindex="0" @keydown.enter="openShareOptions" @keydown.space="openShareOptions">
                     <share2-icon />
@@ -123,6 +123,8 @@ marked.setOptions({
 onMounted(async () => {
     await loadNote();
     renderedContent.value = await marked.parse(note.value.content);
+
+    loadMetadata();
 });
 
 const shareUrl = () => {
@@ -172,5 +174,42 @@ const shareViaLinkedIn = () => {
     const url = encodeURIComponent(shareUrl());
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
     showShareOptions.value = false;
+};
+
+const loadMetadata = async () => {
+    // Update title and description for SEO
+    document.title = `Abdullah Mahrous - ${note.value.title}`;
+
+    let metaDescription = document.querySelector(
+        'meta[name="description"]'
+    )
+
+    if (!metaDescription) {
+        metaDescription = document.createElement('meta')
+        metaDescription.setAttribute('name', 'description')
+    }
+
+    let metaOGTitle = metaDescription.cloneNode(true) as HTMLMetaElement;
+    let metaOGDescription = metaDescription.cloneNode(true) as HTMLMetaElement;
+    let metaOGImage = metaDescription.cloneNode(true) as HTMLMetaElement;
+    let metaOGType = metaDescription.cloneNode(true) as HTMLMetaElement;
+
+    metaOGTitle.setAttribute('name', 'og:title');
+    metaOGTitle.setAttribute('content', note.value.title);
+
+    metaOGDescription.setAttribute('name', 'og:description');
+    metaOGDescription.setAttribute('content', renderedContent.value.substring(0, 150) + '...');
+
+    metaOGImage.setAttribute('name', 'og:image');
+    metaOGImage.setAttribute('content', note.value.imgURL);
+
+    metaOGType.setAttribute('name', 'og:type');
+    metaOGType.setAttribute('content', 'article');
+
+    document.head.appendChild(metaOGTitle);
+    document.head.appendChild(metaOGDescription);
+    document.head.appendChild(metaOGImage);
+    document.head.appendChild(metaOGType);
+    document.head.appendChild(metaDescription);
 };
 </script>

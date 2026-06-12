@@ -5,8 +5,8 @@
             class="order-1 rounded-lg w-full h-44 object-cover sm:order-2 sm:ml-4 sm:h-100 sm:w-1/2" loading="lazy">
 
         <div class="order-2 mt-1 flex min-w-0 flex-col sm:order-1 sm:mt-2 sm:flex-1">
-            <h5 class="order-1 text-xl sm:text-2xl lg:text-3xl font-bold my-4 wrap-break-word md:order-2">{{ title }}
-            </h5>
+            <p class="order-1 text-xl sm:text-2xl lg:text-3xl font-bold my-4 wrap-break-word md:order-2">{{ title }}
+            </p>
             <p v-html="renderedContent"
                 class="order-2 text-slate-600 dark:text-offWhite text-sm/relaxed sm:text-base/relaxed relative line-clamp-7 lg:line-clamp-9 md:order-3 whitespace-pre-line">
             </p>

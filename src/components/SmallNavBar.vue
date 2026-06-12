@@ -91,7 +91,7 @@
                     </div>
 
                     <base-btn class="w-full py-3 border-0 shadow-[0_0_20px_rgba(131,21,231,0.35)]"
-                        @click="scrollToContactForm">
+                        @click="scrollToContactForm" aria-label="Go to Contact form">
                         Contact Me
                         <MoveRight :size="18" class="ml-2" />
                     </base-btn>

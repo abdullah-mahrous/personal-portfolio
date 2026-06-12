@@ -23,14 +23,14 @@
 
                 <div class="mt-8 flex flex-col gap-3 xs:flex-row xs:justify-center lg:justify-start">
                     <router-link :to="{ name: 'home' }" class="w-full xs:w-auto">
-                        <base-btn class="w-full px-6 py-3 xs:w-auto">
+                        <base-btn class="w-full px-6 py-3 xs:w-auto" aria-label="Go to Home">
                             <Home class="mr-2" :size="18" />
                             Go Home
                         </base-btn>
                     </router-link>
 
                     <router-link :to="{ name: 'projects' }" class="w-full xs:w-auto">
-                        <button
+                        <button aria-label="Go to Projects page"
                             class="flex w-full cursor-pointer items-center justify-center rounded-md border-2 border-gray-300 bg-transparent px-6 py-3 text-[14px] font-medium text-lightText transition-colors duration-300 hover:border-gray-400 dark:border-[#2A2A35] dark:text-white dark:hover:border-[#3A3B47] dark:hover:bg-[rgba(255,255,255,0.03)] xs:w-auto">
                             <FolderGit2 class="mr-2" :size="18" />
                             View Projects

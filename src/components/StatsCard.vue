@@ -3,9 +3,9 @@
         <slot></slot>
 
         <div class="min-w-0">
-            <h5 class="font-bold mb-2 break-words" :class="largeTitle ? 'text-xl sm:text-2xl' : 'text-lg'">
+            <p class="font-bold mb-2 break-words" :class="largeTitle ? 'text-xl sm:text-2xl' : 'text-lg'">
                 {{ title }}
-            </h5>
+            </p>
             <p class="card-text leading-relaxed">
                 {{ description }}
             </p>

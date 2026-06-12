@@ -1,9 +1,9 @@
-import IEEEImg from '@/assets/ieee.png';
-import RecipeHubImg from '@/assets/recipehub.png';
-import DoQLImg from '@/assets/doql.png';
-import SalemClinicImg from '@/assets/salem-clinic.png';
+import IEEEImg from '@/assets/ieee.jpg';
+import RecipeHubImg from '@/assets/recipehub.jpg';
+import DoQLImg from '@/assets/doql.jpg';
+import SalemClinicImg from '@/assets/salem-clinic.jpg';
 import ClinicManagerImg from '@/assets/clinic-manager.png';
-import TeamsMakerImg from '@/assets/teams-maker.png';
+import TeamsMakerImg from '@/assets/teams-maker.jpg';
 
 export type Project = {
     id: number;

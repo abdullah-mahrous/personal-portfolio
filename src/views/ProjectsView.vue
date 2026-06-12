@@ -56,7 +56,7 @@
             </div>
 
             <base-btn class="relative z-10 w-full sm:w-auto px-7 py-3 border-0! shadow-[0_0_20px_rgba(131,21,231,0.35)]"
-                @click="handleHomeScroll(scrollToContact)">
+                @click="handleHomeScroll(scrollToContact)" aria-label="Go to Contact form">
                 Contact Me
                 <MoveRight class="ml-2" :size="18" />
             </base-btn>

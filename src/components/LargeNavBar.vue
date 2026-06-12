@@ -28,7 +28,7 @@
             <li class="flex items-center">
                 <theme-toggeler-btn class="mr-8" />
 
-                <base-btn class="px-4 py-2" @click="handleHomeScroll(scrollToContact)">
+                <base-btn class="px-4 py-2" @click="handleHomeScroll(scrollToContact)" aria-label="Go to Contact">
                     Let's Talk
                     <MoveRight class="ml-3" />
                 </base-btn>

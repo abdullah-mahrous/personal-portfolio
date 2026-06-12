@@ -5,17 +5,29 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('../views/HomeView.vue')
+    component: () => import('../views/HomeView.vue'),
+    meta: {
+      title: "Abdullah Mahrous - Full-Stack Developer",
+      description: "Full-Stack Developer specializing in Vue, React, Node and Express. Explore my projects, technical notes, and development journey." 
+    }
   },
   {
     path: '/projects',
     name: 'projects',
-    component: () => import('../views/ProjectsView.vue')
+    component: () => import('../views/ProjectsView.vue'),
+    meta: {
+      title: "Abdullah Mahrous - Projects",
+      description: "Explore my projects that I've built so far with filtration of Front-End and Back-End enabled." 
+    }
   },
   {
     path: '/journal',
     name: 'journal',
-    component: () => import('../views/JournalView.vue')
+    component: () => import('../views/JournalView.vue'),
+    meta: {
+      title: "Abdullah Mahrous - Journal",
+      description: "Follow my development journey through insights, lessons learned, project updates, and experiences in Full-Stack Development." 
+    }
   },
   {
     path: '/notes/:id',
@@ -25,20 +37,30 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('../views/LoginView.vue')
+    component: () => import('../views/LoginView.vue'),
+    meta: {
+      title: "Abdullah Mahrous - Login",
+      description: "Secure login portal for accessing and managing content on Abdullah Mahrous' personal portfolio and journal." 
+    }
   },
   {
     path: '/admin-pannel',
     name: 'adminPannel',
     component: () => import('../views/AdminPannel.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      title: "Abdullah Mahrous - Admin Pannel",
+      description: "Administrative dashboard for managing projects, notes, journal entries, and portfolio content."
     }
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'notFound',
-    component: () => import('../views/NotFoundView.vue')
+    component: () => import('../views/NotFoundView.vue'),
+    meta: {
+      title: "Abdullah Mahrous - Not Found",
+      description: "Page Not Found." 
+    }
   }
 ]
 
