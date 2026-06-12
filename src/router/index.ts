@@ -73,6 +73,19 @@ export const router = createRouter({
 })
 
 router.beforeEach((to) => {
+  document.title = to.meta.title || 'Abdullah Mahrous'
+
+  const description = document.querySelector(
+    'meta[name="description"]'
+  )
+
+  if (description) {
+    description.setAttribute(
+      'content',
+      to.meta.description || ''
+    )
+  }
+
   const authStore = useAuthStore()
 
   if (to.meta.requiresAuth && !authStore.isAuthorized) {
