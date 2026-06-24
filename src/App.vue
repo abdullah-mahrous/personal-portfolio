@@ -9,12 +9,14 @@
         <router-view />
         <go-up-btn />
         <base-footer />
+        <Analytics />
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useNotesStore } from './stores/notes';
+import { Analytics } from '@vercel/analytics/vue';
 import BaseFooter from './components/BaseFooter.vue';
 import GoUpBtn from './components/GoUpBtn.vue';
 import LargeNavBar from './components/LargeNavBar.vue';
