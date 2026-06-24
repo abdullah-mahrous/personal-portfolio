@@ -10,11 +10,13 @@
         <go-up-btn />
         <base-footer />
     </div>
+    <SpeedInsights />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useNotesStore } from './stores/notes';
+import { SpeedInsights } from '@vercel/speed-insights/vue';
 import BaseFooter from './components/BaseFooter.vue';
 import GoUpBtn from './components/GoUpBtn.vue';
 import LargeNavBar from './components/LargeNavBar.vue';
