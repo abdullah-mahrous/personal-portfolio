@@ -9,6 +9,7 @@
         <router-view />
         <go-up-btn />
         <base-footer />
+        <Analytics />
     </div>
     <SpeedInsights />
 </template>
@@ -17,6 +18,7 @@
 import { ref } from 'vue';
 import { useNotesStore } from './stores/notes';
 import { SpeedInsights } from '@vercel/speed-insights/vue';
+import { Analytics } from '@vercel/analytics/vue';
 import BaseFooter from './components/BaseFooter.vue';
 import GoUpBtn from './components/GoUpBtn.vue';
 import LargeNavBar from './components/LargeNavBar.vue';
