@@ -4,6 +4,7 @@ import DoQLImg from '@/assets/doql.jpg';
 import SalemClinicImg from '@/assets/salem-clinic.jpg';
 import ClinicManagerImg from '@/assets/clinic-manager.png';
 import TeamsMakerImg from '@/assets/teams-maker.jpg';
+import BlogImg from '@/assets/blog.jpg'
 
 export type Project = {
     id: number;
@@ -71,10 +72,20 @@ export const Projects: Project[] = [
         id: 655464545645644,
         imgSrc: TeamsMakerImg,
         name: 'Teams Maker',
-        description: 'A platform designed to facilitate teams formation and collaboration for graduation projects, by enabing students to create and join teams, showcase their skills, and manage project workflows from idea submission to final delivery.',
+        description: 'Teams Maker is a platform designed to facilitate teams formation and collaboration for graduation projects, by enabing students to create and join teams, showcase their skills, and manage project workflows from idea submission to final delivery.',
         technologies: ['Vue.js', 'Vue Router', 'Vite', 'Vuetify'],
         link: 'https://github.com/abdullah-mahrous/TeamsMaker-Front-End',
         category: 'frontend',
         creationDate: '2024-06-22',
+    },
+    {
+        id: 655464545645632,
+        imgSrc: BlogImg,
+        name: 'Blogging Platform API',
+        description: 'A secure blogging platform RESTful API with JWT authentication, protected CRUD operations, ownership-based authorization, and MongoDB persistence. Applied modern backend practices including TypeScript, Zod validation, Swagger/OpenAPI documentation, and security middleware (Helmet, CORS, Mongo Sanitize).',
+        technologies: ['Node.js', 'Express.js', 'TypeScript', 'MongoDB', 'Zod', 'Swagger', 'Helmet', 'Mongo Sanitize'],
+        link: 'https://github.com/abdullah-mahrous/metasoftware-task',
+        category: 'backend',
+        creationDate: '2026-06-15',
     }
 ]

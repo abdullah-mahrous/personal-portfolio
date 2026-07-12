@@ -113,6 +113,14 @@
                     <img src="@/assets/logos--pinia.svg" alt="pinia logo" class="size-12.5" />
                 </tech-card>
 
+                <tech-card tech-name="React.js">
+                    <img src="@/assets/logos--react.svg" alt="react logo" class="size-12.5" />
+                </tech-card>
+
+                <tech-card tech-name="Redux Toolkit">
+                    <img src="@/assets/logos--redux.svg" alt="redux toolkit logo" class="size-12.5" />
+                </tech-card>
+
                 <tech-card tech-name="JavaScript">
                     <img src="@/assets/logos--javascript.svg" alt="javascript logo" class="size-12.5" />
                 </tech-card>
@@ -137,6 +145,14 @@
 
                 <tech-card tech-name="MongoDB">
                     <img src="@/assets/mongoDB-logo.svg" alt="mongoDB logo" class="size-12.5" />
+                </tech-card>
+
+                <tech-card tech-name="PostgreSQL">
+                    <img src="@/assets/logos--postgresql.svg" alt="postgresql logo" class="size-12.5" />
+                </tech-card>
+
+                <tech-card tech-name="MySQL">
+                    <img src="@/assets/logos--mysql.svg" alt="mysql logo" class="size-12.5" />
                 </tech-card>
 
                 <tech-card tech-name="Tailwind CSS">
