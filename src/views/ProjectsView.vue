@@ -1,34 +1,40 @@
 <template>
     <main class="my-6 sm:my-8 px-4 sm:px-6 md:px-8 lg:px-16 overflow-x-hidden">
-        <h1 class="mb-5 font-bold text-4xl sm:text-5xl">
+        <h1 class="mb-5 font-bold text-4xl sm:text-5xl" data-reveal data-animation="fade-up">
             Projects
         </h1>
-        <p class="text-slate-600 dark:text-offWhite mb-8 text-base sm:text-lg">
+        <p class="text-slate-600 dark:text-offWhite mb-8 text-base sm:text-lg" data-reveal data-animation="fade-up">
             Things I've built so far
         </p>
 
         <!-- filter projects btns -->
-        <div class="flex flex-wrap items-center gap-3">
+        <div class="flex flex-wrap items-center gap-3" data-stagger>
+
             <button v-for="option in filterOptions" :key="option.value" type="button" class="base-tabs base-border"
                 :class="activeFilter === option.value ? 'filter-btn-active' : ''"
                 :aria-pressed="activeFilter === option.value" @click="setFilter(option.value)">
                 {{ option.label }}
             </button>
+
         </div>
 
         <!-- project-cards -->
         <TransitionGroup name="projects" tag="div"
             class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+
             <div v-for="(project, index) in filteredProjects" :key="project.id" class="origin-[center_top] h-full"
-                :style="getDelayStyle(index)">
+                :style="getDelayStyle(index)" data-stagger>
+
                 <project-card class="h-full" :img-src="project.imgSrc" :project-name="project.name"
                     :project-summary="project.description" :tags="project.technologies" :project-link="project.link" />
+
             </div>
         </TransitionGroup>
 
         <!-- cta banner -->
         <section
-            class="mt-10 mb-12 rounded-xl base-border bg-white dark:bg-[linear-gradient(135deg,#10111800_0%,#0D0E14_100%)] dark:bg-darkCard px-5 py-4 md:px-7 md:py-5 flex flex-col gap-5 md:flex-row md:items-center md:justify-between relative overflow-hidden">
+            class="mt-10 mb-12 rounded-xl base-border bg-white dark:bg-[linear-gradient(135deg,#10111800_0%,#0D0E14_100%)] dark:bg-darkCard px-5 py-4 md:px-7 md:py-5 flex flex-col gap-5 md:flex-row md:items-center md:justify-between relative overflow-hidden"
+            data-reveal data-animation="fade-up">
             <div
                 class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_5%_45%,rgba(131,21,231,0.20),transparent_30%)]">
             </div>
@@ -66,10 +72,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
+
 import { scrollToContact, handleHomeScroll } from '../services/scrollService';
 import { useProjectsStore } from '../stores/projects';
+import { scrollReveal } from '../composables/scrollAnimation';
 import type { Project } from '../services/projectsService';
+
 import { MoveRight } from '@lucide/vue';
 import BaseBtn from '../components/BaseBtn.vue';
 import ProjectCard from '../components/ProjectCard.vue';
@@ -78,6 +87,8 @@ type ProjectCategory = 'frontend' | 'backend';
 type ProjectFilter = 'all' | ProjectCategory;
 
 const projectsStore = useProjectsStore();
+
+onMounted(() => scrollReveal());
 
 projectsStore.fetchProjects();
 

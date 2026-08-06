@@ -1,176 +1,20 @@
 <template>
     <main class="mb-4 sm:mb-8 px-4 sm:px-6 md:px-8 lg:px-16 overflow-x-hidden">
-        <section class="pt-6 sm:pt-10">
-            <div class="flex flex-col-reverse gap-4 xs:gap-6 sm:flex-row sm:items-center md:gap-8 lg:gap-10">
 
-                <div class="w-full sm:w-[60%] lg:w-1/2">
-                    <span class="text-primary text-lg sm:text-xl md:text-2xl">
-                        Hi, I'm
-                    </span>
-
-                    <h1 class="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold leading-[1.1] mt-4 mb-4">
-                        Abdullah<span class="text-primary"> Mahrous</span>
-                    </h1>
-                    <p class="text-primary text-base sm:text-lg lg:text-xl mb-4">
-                        Full-Stack Developer | Vue.js | Node.js | TypeScript | Scalable Applications
-                    </p>
-                    <p class="text-slate-600 dark:text-offWhite text-base sm:text-lg mb-8 max-w-none lg:max-w-[75%]">
-                        I build scalable web applications, focusing on performance, architecture, and user
-                        experience — not just making things work, but making them last.
-                    </p>
-
-                    <div class="flex flex-col xs:flex-row gap-4 mb-10">
-                        <router-link to="/projects" class="w-full sm:w-fit">
-                            <base-btn class="w-full sm:min-w-48 lg:min-w-0 lg:w-auto px-5 sm:px-6 py-3.5 sm:py-4"
-                                aria-label="View My Work">
-                                View My Work
-                                <MoveRight class="ml-3" />
-                            </base-btn>
-                        </router-link>
-
-                        <button aria-label="Download CV"
-                            class="w-full sm:w-fit sm:min-w-48 lg:min-w-0 lg:w-auto cursor-pointer border-2 border-gray-300 dark:border-[#2A2A35] bg-transparent text-lightText dark:text-white text-[14px] font-medium rounded-md dark:hover:bg-[rgba(255,255,255,0.03)] hover:border-gray-400 dark:hover:border-[#3A3B47] transition-colors duration-300 flex justify-center items-center px-5 sm:px-6 py-3.5 sm:py-4"
-                            @click="downloadCV">
-                            Download CV
-                            <Download class="ml-3" />
-                        </button>
-                    </div>
-
-                    <div class="flex flex-wrap justify-between xs:justify-start gap-4 xs:gap-8 sm:gap-6 mt-6">
-                        <github-link class="hero-socials base-border p-4" :icon-size="24" />
-                        <linkedin-link class="hero-socials base-border p-4" :icon-size="24" />
-                        <facebook-link class="hero-socials base-border p-4" :icon-size="24" />
-                        <mail-link class="hero-socials base-border p-4" :icon-size="24" />
-                    </div>
-
-                </div>
-
-                <div class="flex justify-center w-full sm:w-[40%] lg:w-1/2 relative mt-2 sm:mt-0">
-                    <div
-                        class="hero-glow-circles bg-[radial-gradient(circle_at_top_right,rgba(131,21,231,0.18),transparent_45%)]">
-                    </div>
-
-                    <div
-                        class="hero-glow-circles bg-[radial-gradient(circle_at_bottom_left,rgba(131,21,231,0.18),transparent_45%)]">
-                    </div>
-
-                    <div
-                        class="relative isolate overflow-visible xs:aspect-3/4 aspect-4/4 w-full max-w-52 sm:max-w-60 md:max-w-[18rem] lg:max-w-sm">
-                        <div class="hero-particles -top-5 -left-20 bg-[radial-gradient(#8315e766_1px,transparent_1px)]">
-                        </div>
-
-                        <div
-                            class="hero-particles -bottom-10 -right-20 bg-[radial-gradient(#8315e766_1px,transparent_1px)]">
-                        </div>
-
-                        <img src="@/assets/abdo-photo.jpeg" alt="Profile Picture" loading="lazy"
-                            class="object-cover animate-[floatImage_6s_linear_infinite] relative z-10 w-full h-full transform rotate-2 sm:rotate-4 shadow-[0_0_30px_rgba(131,21,231,0.28),0_0_60px_rgba(131,21,231,0.18)] rounded-full xs:rounded-3xl" />
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 mt-12 sm:mt-15">
-
-                <stats-card title="1.5+" description="Years Of Professional Experience" :large-title="true"
-                    class="personal-stats">
-                    <span class="icon-glow">
-                        <User2 class="text-primary" :size="30" />
-                    </span>
-                </stats-card>
-
-                <stats-card title="6+" description="Projects Completed" :large-title="true" class="personal-stats">
-                    <span class="icon-glow">
-                        <FolderGit2 class="text-primary" :size="30" />
-                    </span>
-                </stats-card>
-
-                <stats-card title="100%" description="Clean & Responsive UI" :large-title="true" class="personal-stats">
-                    <span class="icon-glow">
-                        <ShieldCheck class="text-primary" :size="30" />
-                    </span>
-                </stats-card>
-
-                <stats-card title="Strong" description="Problem Solving Skills" :large-title="true"
-                    class="personal-stats">
-                    <span class="icon-glow">
-                        <Lightbulb class="text-primary" :size="30" />
-                    </span>
-                </stats-card>
-
-            </div>
-
-        </section>
+        <hero-section />
 
         <home-sections class="mt-16 sm:mt-20" title="My Tech Stack">
-            <div
+            <div data-stagger
                 class="w-full grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 lg:grid-cols-10 grid-flow-row gap-4 sm:gap-6">
-                <tech-card tech-name="Vue.js">
-                    <img src="@/assets/logos--vue.svg" alt="vue logo" class="size-12.5">
+
+                <tech-card v-for="tech in techStack" :key="tech.name" :tech-name="tech.name">
+                    <img :src="tech.imgSrc" :alt="`${tech.name} logo`" class="size-12.5">
                 </tech-card>
 
-                <tech-card tech-name="Pinia">
-                    <img src="@/assets/logos--pinia.svg" alt="pinia logo" class="size-12.5" />
-                </tech-card>
-
-                <tech-card tech-name="React.js">
-                    <img src="@/assets/logos--react.svg" alt="react logo" class="size-12.5" />
-                </tech-card>
-
-                <tech-card tech-name="Redux Toolkit">
-                    <img src="@/assets/logos--redux.svg" alt="redux toolkit logo" class="size-12.5" />
-                </tech-card>
-
-                <tech-card tech-name="JavaScript">
-                    <img src="@/assets/logos--javascript.svg" alt="javascript logo" class="size-12.5" />
-                </tech-card>
-
-                <tech-card tech-name="TypeScript">
-                    <img src="@/assets/logos--typescript-icon.svg" alt="typescript logo" class="size-12.5" />
-                </tech-card>
-
-                <tech-card tech-name="Node.js">
-                    <img src="@/assets/node-logo.svg" alt="node.js logo" class="size-12.5" />
-                </tech-card>
-
-                <tech-card tech-name="Express.js">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="size-12.5 text-lightText dark:text-current"
-                        viewBox="0 0 24 24">
-                        <path d="M0 0h24v24H0z" fill="none" />
-                        <path fill="currentColor"
-                            d="M24 18.588a1.53 1.53 0 0 1-1.895-.72l-3.45-4.771l-.5-.667l-4.003 5.444a1.466 1.466 0 0 1-1.802.708l5.158-6.92l-4.798-6.251a1.595 1.595 0 0 1 1.9.666l3.576 4.83l3.596-4.81a1.435 1.435 0 0 1 1.788-.668L21.708 7.9l-2.522 3.283a.666.666 0 0 0 0 .994l4.804 6.412zM.002 11.576l.42-2.075c1.154-4.103 5.858-5.81 9.094-3.27c1.895 1.489 2.368 3.597 2.275 5.973H1.116C.943 16.447 4.005 19.009 7.92 17.7a4.08 4.08 0 0 0 2.582-2.876c.207-.666.548-.78 1.174-.588a5.42 5.42 0 0 1-2.589 3.957a6.27 6.27 0 0 1-7.306-.933a6.58 6.58 0 0 1-1.64-3.858c0-.235-.08-.455-.134-.666A88 88 0 0 1 0 11.577zm1.127-.286h9.654c-.06-3.076-2.001-5.258-4.59-5.278c-2.882-.04-4.944 2.094-5.071 5.264z" />
-                    </svg>
-
-                </tech-card>
-
-                <tech-card tech-name="MongoDB">
-                    <img src="@/assets/mongoDB-logo.svg" alt="mongoDB logo" class="size-12.5" />
-                </tech-card>
-
-                <tech-card tech-name="PostgreSQL">
-                    <img src="@/assets/logos--postgresql.svg" alt="postgresql logo" class="size-12.5" />
-                </tech-card>
-
-                <tech-card tech-name="MySQL">
-                    <img src="@/assets/logos--mysql.svg" alt="mysql logo" class="size-12.5" />
-                </tech-card>
-
-                <tech-card tech-name="Tailwind CSS">
-                    <img src="@/assets/tailwind-logo.svg" alt="tailwind logo" class="size-12.5" />
-                </tech-card>
-
-                <tech-card tech-name="Bootstrap">
-                    <img src="@/assets/bootstrap-logo.svg" alt="bootstrap logo" class="size-12.5" />
-                </tech-card>
-
-                <tech-card tech-name="Git">
-                    <img src="@/assets/git-logo.svg" alt="git logo" class="size-12.5" />
-                </tech-card>
             </div>
-
         </home-sections>
 
-        <home-sections class="mt-16 sm:mt-20" title="Why Work With Me?">
+        <home-sections class="mt-16 sm:mt-20" title="Why Work With Me?" data-reveal data-animation="right">
             <div class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
 
                 <stats-card title="Real-time Expertise" :large-title="false"
@@ -243,50 +87,96 @@
         </home-sections>
 
         <home-sections class="mt-16 sm:mt-20" title="Featured Projects" :has-link="true" route-name="projects"
-            link-text="Projects">
+            link-text="Projects" data-reveal data-animation="left">
+
             <div v-if="featuredProjects" class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+
                 <project-card v-for="project in featuredProjects" :key="project.id" class="h-full"
                     :img-src="project.imgSrc" :project-name="project.name" :project-summary="project.description"
                     :tags="project.technologies" :project-link="project.link" />
+
             </div>
+
         </home-sections>
 
         <home-sections class="mt-16 sm:mt-20" title="Latest Dev Notes" :has-link="true" route-name="journal"
-            link-text="Dev Notes">
+            link-text="Dev Notes" data-reveal data-animation="right">
+
             <div v-if="featuredNotes.length > 0"
                 class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
 
                 <router-link v-for="note in featuredNotes" :key="note.id"
                     :to="{ name: 'note', params: { id: note.id } }" class="no-underline cursor-pointer">
+
                     <note-card class="h-full w-full" :img-src="note.imgURL" :title="note.title" :content="note.content"
                         :creation-date="formatDate(note.creationDate)" :read-time="note.readTime" />
+
                 </router-link>
 
             </div>
+
         </home-sections>
 
         <!-- contact form -->
-        <contact-form />
+        <contact-form data-reveal data-animation="left" />
     </main>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { Download, FolderGit2, MoveRight, ShieldCheck, User2, Lightbulb, Zap, Box } from '@lucide/vue';
+
 import { useProjectsStore } from '../stores/projects';
 import { useNotesStore } from '../stores/notes';
 import { formatDate } from '../composables/dateFormater';
-import BaseBtn from '../components/BaseBtn.vue';
-import GithubLink from '../components/GithubLink.vue';
-import LinkedinLink from '../components/LinkedinLink.vue';
-import FacebookLink from '../components/FacebookLink.vue';
-import MailLink from '../components/MailLink.vue';
-import StatsCard from '../components/StatsCard.vue';
-import HomeSections from '../components/HomeSections.vue';
-import TechCard from '../components/TechCard.vue';
+import { scrollReveal } from '../composables/scrollAnimation';
+
+import HomeSections from '../components/home/HomeSections.vue';
+import TechCard from '../components/home/TechCard.vue';
 import ProjectCard from '../components/ProjectCard.vue';
-import ContactForm from '../components/ContactForm.vue';
-import NoteCard from '../components/NoteCard.vue';
+import ContactForm from '../components/home/ContactForm.vue';
+import NoteCard from '../components/notes/NoteCard.vue';
+import HeroSection from '../components/home/HeroSection.vue';
+import StatsCard from '../components/home/StatsCard.vue';
+import { Zap, Box } from '@lucide/vue';
+
+// technology stack icons
+import VueLogo from '@/assets/icons/logos--vue.svg';
+import PiniaLogo from '@/assets/icons/logos--pinia.svg';
+import ReactLogo from '@/assets/icons/logos--react.svg';
+import ReduxLogo from '@/assets/icons/logos--redux.svg';
+import JavaScriptLogo from '@/assets/icons/logos--javascript.svg';
+import TypeScriptLogo from '@/assets/icons/logos--typescript-icon.svg';
+import NodeLogo from '@/assets/icons/node-logo.svg';
+import ExpressLogo from '@/assets/icons/express-logo.svg';
+import MongoDBLogo from '@/assets/icons/mongoDB-logo.svg';
+import PostgreSQLLogo from '@/assets/icons/logos--postgresql.svg';
+import MySQLLogo from '@/assets/icons/logos--mysql.svg';
+import TailwindLogo from '@/assets/icons/tailwind-logo.svg';
+import BootstrapLogo from '@/assets/icons/bootstrap-logo.svg';
+import GitLogo from '@/assets/icons/git-logo.svg';
+import ViteLogo from '@/assets/icons/vite-logo.svg';
+import VitestLogo from '@/assets/icons/vitest-logo.svg';
+import JestLogo from '@/assets/icons/jest-logo.svg';
+
+const techStack = [
+    { name: 'Vue.js', imgSrc: VueLogo },
+    { name: 'Pinia', imgSrc: PiniaLogo },
+    { name: 'React.js', imgSrc: ReactLogo },
+    { name: 'Redux Toolkit', imgSrc: ReduxLogo },
+    { name: 'JavaScript', imgSrc: JavaScriptLogo },
+    { name: 'TypeScript', imgSrc: TypeScriptLogo },
+    { name: 'Node.js', imgSrc: NodeLogo },
+    { name: 'Express.js', imgSrc: ExpressLogo },
+    { name: 'MongoDB', imgSrc: MongoDBLogo },
+    { name: 'PostgreSQL', imgSrc: PostgreSQLLogo },
+    { name: 'MySQL', imgSrc: MySQLLogo },
+    { name: 'Tailwind CSS', imgSrc: TailwindLogo },
+    { name: 'Bootstrap', imgSrc: BootstrapLogo },
+    { name: 'Git', imgSrc: GitLogo },
+    { name: 'Vite', imgSrc: ViteLogo },
+    { name: 'Vitest', imgSrc: VitestLogo },
+    { name: 'Jest', imgSrc: JestLogo }
+];
 
 const notesStore = useNotesStore();
 const projectsStore = useProjectsStore();
@@ -295,6 +185,8 @@ let featuredProjects = ref<any>([]);
 let featuredNotes = ref<any>([]);
 
 onMounted(async () => {
+    scrollReveal();
+
     // Fetch notes when component mounts
     if (notesStore.notes.length === 0)
         await notesStore.fetchNotes();
@@ -304,15 +196,6 @@ onMounted(async () => {
     projectsStore.fetchProjects();
     featuredProjects.value = projectsStore.fetchFeaturedProjects();
 });
-
-const downloadCV = () => {
-    const link = document.createElement('a');
-    link.href = 'https://drive.google.com/file/d/1zfS5GM5yTWD1go5zrBTKSoyL32Z600OA/view?usp=drive_link';
-    link.download = 'Abdullah_Mahrous_CV.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-};
 </script>
 
 <style>
@@ -330,28 +213,6 @@ const downloadCV = () => {
     100% {
         transform: translateY(0px);
         opacity: 1;
-    }
-}
-
-@keyframes floatImage {
-    0% {
-        transform: translate3d(0, 0px, 0);
-    }
-
-    25% {
-        transform: translate3d(0, -10px, 0);
-    }
-
-    50% {
-        transform: translate3d(0, -16px, 0);
-    }
-
-    75% {
-        transform: translate3d(0, -10px, 0);
-    }
-
-    100% {
-        transform: translate3d(0, 0px, 0);
     }
 }
 </style>
