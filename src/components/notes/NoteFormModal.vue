@@ -74,9 +74,9 @@
 
 <script setup lang="ts">
 import { computed, onUnmounted, ref, watch } from 'vue';
-import BaseInput from './BaseInput.vue';
-import BaseBtn from './BaseBtn.vue';
-import type { Note } from '../services/notesService';
+import BaseInput from '../BaseInput.vue';
+import BaseBtn from '../BaseBtn.vue';
+import type { Note } from '../../services/notesService';
 
 interface Props {
     isOpen: boolean;

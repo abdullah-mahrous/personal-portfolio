@@ -20,7 +20,7 @@
         <div v-if="notesStore.error" class="bg-red-500/10 border border-red-500 rounded-lg p-4 mb-6">
             <p class="text-red-500">{{ notesStore.error }}</p>
         </div>
-        
+
         <!-- Loading State -->
         <div v-if="notesStore.loading" class="text-center py-12">
             <p class="text-slate-600 dark:text-offWhite">Loading notes...</p>
@@ -91,8 +91,8 @@ import { useRouter } from 'vue-router';
 import { useNotesStore } from '../stores/notes';
 import { useAuthStore } from '../stores/auth';
 import BaseBtn from '../components/BaseBtn.vue';
-import NoteFormModal from '../components/NoteFormModal.vue';
-import NoteDeleteConfirmModal from '../components/NoteDeleteConfirmModal.vue';
+import NoteFormModal from '../components/notes/NoteFormModal.vue';
+import NoteDeleteConfirmModal from '../components/notes/NoteDeleteConfirmModal.vue';
 import type { Note } from '../services/notesService';
 import { formatDate } from '../composables/dateFormater';
 

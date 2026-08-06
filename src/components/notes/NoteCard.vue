@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { formatDate } from '../composables/dateFormater';
+import { formatDate } from '../../composables/dateFormater';
 import { marked } from 'marked';
 
 const props = defineProps<{

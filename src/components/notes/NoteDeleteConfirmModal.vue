@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import BaseBtn from './BaseBtn.vue';
+import BaseBtn from '../BaseBtn.vue';
 
 interface Props {
     isOpen: boolean;

@@ -28,22 +28,6 @@ html.dark body {
     color: var(--color-darkText);
 }
 
-html.theme-transition,
-html.theme-transition *,
-html.theme-transition *::before,
-html.theme-transition *::after {
-    transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity, left;
-    transition-duration: 420ms;
-    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-html.theme-transition img,
-html.theme-transition video,
-html.theme-transition canvas,
-html.theme-transition iframe {
-    transition-property: opacity, filter;
-}
-
 .base-border {
     @apply border border-gray-200 dark:border-[#1F2028];
 }

@@ -27,8 +27,8 @@
 
         <form class="flex flex-col w-full lg:w-[60%] relative z-10" novalidate @submit.prevent="handleSubmit">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <base-input v-model="formData.name" type="text" place-holder="Name" class="w-full"
-                    autocomplete="name" :disabled="isSubmitting" />
+                <base-input v-model="formData.name" type="text" place-holder="Name" class="w-full" autocomplete="name"
+                    :disabled="isSubmitting" />
                 <base-input v-model="formData.email" type="email" place-holder="Email" class="w-full"
                     autocomplete="email" :disabled="isSubmitting" />
             </div>
@@ -53,8 +53,8 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 import { Send } from '@lucide/vue';
-import BaseBtn from './BaseBtn.vue';
-import BaseInput from './BaseInput.vue';
+import BaseBtn from '../BaseBtn.vue';
+import BaseInput from '../BaseInput.vue';
 
 type ContactApiResponse = {
     message?: string;

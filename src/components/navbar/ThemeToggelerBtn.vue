@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { Sun, Moon } from '@lucide/vue';
 import { ref, onBeforeUnmount, onMounted } from 'vue';
-import { toggleTheme, isDarkMode, subscribeTheme } from '../services/themeService';
+import { toggleTheme, isDarkMode, subscribeTheme } from '../../services/themeService';
 
 const isDark = ref(false);
 let unsubscribeTheme: (() => void) | undefined;

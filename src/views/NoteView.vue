@@ -82,14 +82,16 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useNotesStore } from '../stores/notes';
 import { useRoute } from 'vue-router';
-import { MessageCircle, MoveLeft, Share2Icon } from '@lucide/vue';
-import CommentSection from '../components/CommentSection.vue';
+
+import { useNotesStore } from '../stores/notes';
 import { formatDate } from '../composables/dateFormater';
+import { marked } from 'marked';
 import { type Note } from '../services/notesService';
 import { type NoteComment } from '../services/commentsService';
-import { marked } from 'marked';
+
+import { MessageCircle, MoveLeft, Share2Icon } from '@lucide/vue';
+import CommentSection from '../components/notes/CommentSection.vue';
 
 const route = useRoute();
 const notesStore = useNotesStore();

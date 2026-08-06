@@ -57,11 +57,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import BaseInput from './BaseInput.vue';
-import BaseBtn from './BaseBtn.vue';
+import BaseInput from '../BaseInput.vue';
+import BaseBtn from '../BaseBtn.vue';
 import Comment from './Comment.vue';
 import { Send } from '@lucide/vue';
-import { useCommentsStore } from '../stores/comments';
+import { useCommentsStore } from '../../stores/comments';
 
 const props = defineProps<{
     noteId: string;

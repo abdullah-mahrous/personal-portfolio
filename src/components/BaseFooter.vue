@@ -17,8 +17,8 @@
 
 <script setup lang="ts">
 import Logo from './Logo.vue';
-import GithubLink from './GithubLink.vue';
-import LinkedinLink from './LinkedinLink.vue';
-import MailLink from './MailLink.vue';
-import FacebookLink from './FacebookLink.vue';
+import GithubLink from './links/GithubLink.vue';
+import LinkedinLink from './links/LinkedinLink.vue';
+import MailLink from './links/MailLink.vue';
+import FacebookLink from './links/FacebookLink.vue';
 </script>

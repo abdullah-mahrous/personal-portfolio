@@ -13,7 +13,7 @@
             <div class="flex items-center gap-2 mb-2">
                 <h3 class="font-semibold text-lightText dark:text-white">{{ name }}</h3>
                 <span class="text-slate-500 dark:text-offWhite text-sm">{{ formatDate(creationDate, 'relative')
-                }}</span>
+                    }}</span>
             </div>
 
             <!-- Comment Text -->
@@ -24,8 +24,8 @@
 
 <script setup lang="ts">
 import { User } from '@lucide/vue';
-import type { NoteComment } from '../services/commentsService';
-import { useDateFormatter } from '../composables/dateFormater';
+import type { NoteComment } from '../../services/commentsService';
+import { useDateFormatter } from '../../composables/dateFormater';
 
 const props = defineProps<{
     comment: NoteComment;

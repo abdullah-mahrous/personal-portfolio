@@ -39,9 +39,9 @@
 
 <script setup lang="ts">
 import { MoveRight } from '@lucide/vue';
-import { scrollToContact, handleHomeScroll } from '../services/scrollService';
+import { scrollToContact, handleHomeScroll } from '../../services/scrollService';
 import ThemeToggelerBtn from './ThemeToggelerBtn.vue';
-import BaseBtn from './BaseBtn.vue';
-import Logo from './Logo.vue';
+import BaseBtn from '../BaseBtn.vue';
+import Logo from '../Logo.vue';
 
 </script>

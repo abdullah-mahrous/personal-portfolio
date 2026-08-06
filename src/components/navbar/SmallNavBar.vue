@@ -117,16 +117,16 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { scrollToContact, handleHomeScroll } from '../services/scrollService';
+import { scrollToContact, handleHomeScroll } from '../../services/scrollService';
 import ThemeToggelerBtn from './ThemeToggelerBtn.vue';
-import Logo from './Logo.vue';
-import BaseBtn from '../components/BaseBtn.vue';
-import GithubLink from '../components/GithubLink.vue';
-import LinkedinLink from '../components/LinkedinLink.vue';
-import FacebookLink from '../components/FacebookLink.vue';
-import MailLink from '../components/MailLink.vue';
+import Logo from '../Logo.vue';
+import BaseBtn from '../BaseBtn.vue';
+import GithubLink from '../links/GithubLink.vue';
+import LinkedinLink from '../links/LinkedinLink.vue';
+import FacebookLink from '../links/FacebookLink.vue';
+import MailLink from '../links/MailLink.vue';
 import { FileCode, Folder, House, Menu, MessagesSquare, X, MoveRight, Moon, Sun } from '@lucide/vue';
-import { isDarkMode, subscribeTheme } from '../services/themeService';
+import { isDarkMode, subscribeTheme } from '../../services/themeService';
 
 const isSidebarOpen = ref(false);
 const isDark = ref(isDarkMode());
